@@ -26,6 +26,17 @@ create table company
 create table temperature
 (
     date_hour     timestamp primary key,
+    location      integer not null references Location (id),
+    prediction_id integer not null,
+    min_value     float   not null,
+    max_value     float   not null
+
+);
+
+create table humidity
+(
+    date_hour     timestamp primary key,
+    location      integer not null references Location (id),
     prediction_id integer not null,
     min_value     float   not null,
     max_value     float   not null
@@ -41,7 +52,7 @@ create table level
     location       integer not null references Location (id),
     deposit_number integer not null,
     counter        bigint  not null,
-    CONSTRAINT unique_level_entry UNIQUE (date_hour, prediction_id,gas_level,location,deposit_number,counter)
+    CONSTRAINT unique_level_entry UNIQUE (date_hour, prediction_id, gas_level, location, deposit_number, counter)
 );
 
 create table planned_delivery
@@ -53,14 +64,14 @@ create table planned_delivery
     time_of_day varchar(10) check ( time_of_day in ('M', 'T', 'M/T', ''))
 );
 
-    create table delivery
-    (
-        id          serial primary key,
-        company     integer not null,
-        load_amount float   not null,
-        location_id integer not null references Location (id),
-        time_of_day varchar(10) check ( time_of_day in ('M', 'T', 'M/T', '')),
-        date_hour   date    not null,
-        CONSTRAINT unique_delivery_entry UNIQUE (company, load_amount,location_id,time_of_day,date_hour)
-    );
+create table delivery
+(
+    id          serial primary key,
+    company     integer not null,
+    load_amount float   not null,
+    location_id integer not null references Location (id),
+    time_of_day varchar(10) check ( time_of_day in ('M', 'T', 'M/T', '')),
+    date_hour   date    not null,
+    CONSTRAINT unique_delivery_entry UNIQUE (company, load_amount, location_id, time_of_day, date_hour)
+);
 

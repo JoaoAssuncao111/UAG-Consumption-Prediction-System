@@ -1,7 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.10"
+    id("org.springframework.boot") version "2.7.4"
+    id("io.spring.dependency-management") version "1.0.14.RELEASE"
+    kotlin("jvm") version "1.8.0"
+    kotlin("plugin.spring") version "1.6.21"
     application
 }
 
@@ -13,11 +16,20 @@ repositories {
 }
 
 dependencies {
-    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation ("org.apache.poi:poi:5.0.0")
-    implementation ("org.apache.poi:poi-ooxml:5.0.0")
-    implementation ("org.postgresql:postgresql:42.3.1")
-    implementation ("org.json:json:20211205")
+    implementation("org.jdbi:jdbi3-kotlin:3.33.0")
+    implementation("org.jdbi:jdbi3-postgres:3.33.0")
+    implementation("org.json:json:20220320")
+    implementation("org.postgresql:postgresql:42.5.4")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jdbi:jdbi3-core:3.37.1")
+    implementation("org.springframework.security:spring-security-core:6.0.2")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(kotlin("test"))
 }
 
@@ -30,5 +42,5 @@ tasks.withType<KotlinCompile> {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("Application.kt")
 }

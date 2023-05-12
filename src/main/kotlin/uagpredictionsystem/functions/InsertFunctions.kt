@@ -1,8 +1,11 @@
 package functions
 
-import DeliveryEntry
-import LevelEntry
+
 import password
+import uagpredictionsystem.TemperatureEntry
+import uagpredictionsystem.functions.DeliveryEntry
+import uagpredictionsystem.functions.LevelEntry
+import uagpredictionsystem.replaceAccentedCharacters
 import url
 import user
 import java.sql.*
@@ -13,7 +16,8 @@ fun insertLocationData(
 ) {
     try {
         val locationConnection = DriverManager.getConnection(url, user, password)
-        val sql = "INSERT INTO location (observation,name,distance) VALUES (?, ?, ?)"
+        val sql = "INSERT INTO location (observation,name,distance) VALUES (?, ?, ?) " +
+                "ON CONFLICT (observation, name, distance) DO NOTHING;"
         val preparedStatement: PreparedStatement = locationConnection.prepareStatement(sql)
 
         for (i in 0 until locations.size) {
@@ -92,7 +96,7 @@ fun insertDeliveryData(deliveryData: List<DeliveryEntry>) {
 
         deliveryData.forEach { entry ->
             if (entry.company.contains("/")) {
-                // deal with this later
+                //TODO("multiple companies for same delivery")
             }
             val checkCompanyStatement = deliveryConnection.prepareStatement(checkCompanySql)
             checkCompanyStatement.setString(1, entry.company)
@@ -144,4 +148,27 @@ fun insertDeliveryData(deliveryData: List<DeliveryEntry>) {
 
 
 }
+
+fun insertTemperatureData(temperatureData: List<TemperatureEntry>) {
+    try {
+
+        val connection = DriverManager.getConnection(url, user, password)
+        val insertDeliveryEntry =
+            "INSERT INTO temperature(date_hour, location, prediction_id, min_value, max_value) VALUES (?, ?, ?, ?, ?)" +
+                    "ON CONFLICT(date_hour, location, prediction_id, min_value, max_value) DO NOTHING;"
+        val locations = mutableListOf<String>()
+        val statement = connection.createStatement()
+        val resultSet = statement.executeQuery("SELECT name FROM LOCATION")
+        while(resultSet.next()){
+            val value = replaceAccentedCharacters(resultSet.getString("name"))
+            locations.add(value)
+        }
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
+
+
 
