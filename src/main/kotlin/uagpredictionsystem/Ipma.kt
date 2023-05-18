@@ -1,5 +1,6 @@
 package uagpredictionsystem
-import uagpredictionsystem.functions.extractTemperature
+
+import uagpredictionsystem.functions.*
 
 data class TemperatureEntry(
     val location: String,
@@ -16,5 +17,15 @@ fun main() {
         extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-max/", "mtxmx")
     val minTemperature =
         extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-min/", "mtnmn")
+    val ipmaLocations = extractIpmaLocations()
+
+    val ipmaStations = extractIpmaStations()
+
+    val temperaturePredictions = extractTemperaturePredictions(ipmaLocations)
+    val humidityEntries = extractHumidity(ipmaStations)
+
+    for (element in humidityEntries) {
+        println(element)
+    }
 }
 

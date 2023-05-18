@@ -1,11 +1,9 @@
-package functions
+package uagpredictionsystem.functions
 
 
 import password
-import uagpredictionsystem.TemperatureEntry
-import uagpredictionsystem.functions.DeliveryEntry
-import uagpredictionsystem.functions.LevelEntry
-import uagpredictionsystem.replaceAccentedCharacters
+import uagpredictionsystem.calculateDistance
+import uagpredictionsystem.models.Location
 import url
 import user
 import java.sql.*
@@ -16,8 +14,7 @@ fun insertLocationData(
 ) {
     try {
         val locationConnection = DriverManager.getConnection(url, user, password)
-        val sql = "INSERT INTO location (observation,name,distance) VALUES (?, ?, ?) " +
-                "ON CONFLICT (observation, name, distance) DO NOTHING;"
+        val sql = "INSERT INTO location (observation,name,distance) VALUES (?, ?, ?)  ON CONFLICT DO NOTHING"
         val preparedStatement: PreparedStatement = locationConnection.prepareStatement(sql)
 
         for (i in 0 until locations.size) {
@@ -149,19 +146,41 @@ fun insertDeliveryData(deliveryData: List<DeliveryEntry>) {
 
 }
 
-fun insertTemperatureData(temperatureData: List<TemperatureEntry>) {
+fun insertTemperaturePredictionData(temperatureData:  HashMap<IpmaLocation, List<TemperaturePredictionEntry>>) {
     try {
 
         val connection = DriverManager.getConnection(url, user, password)
-        val insertDeliveryEntry =
+        val insertTemperaturePredictionEntry =
             "INSERT INTO temperature(date_hour, location, prediction_id, min_value, max_value) VALUES (?, ?, ?, ?, ?)" +
                     "ON CONFLICT(date_hour, location, prediction_id, min_value, max_value) DO NOTHING;"
-        val locations = mutableListOf<String>()
+
+        val locations = mutableListOf<Location>()
         val statement = connection.createStatement()
-        val resultSet = statement.executeQuery("SELECT name FROM LOCATION")
+        val resultSet = statement.executeQuery("SELECT * FROM LOCATION")
         while(resultSet.next()){
-            val value = replaceAccentedCharacters(resultSet.getString("name"))
-            locations.add(value)
+            val id = resultSet.getInt("id")
+            val observation = resultSet.getString("observation")
+            val name = resultSet.getString("name")
+            val distance = resultSet.getDouble("distance")
+            val latitude = resultSet.getDouble("latitude")
+            val longitude = resultSet.getDouble("longitude")
+            locations.add(Location(id,observation,name,distance,latitude,longitude))
+        }
+
+        for(entry in temperatureData){
+            val insertTemperaturePredictionEntryStmt = connection.prepareStatement(insertTemperaturePredictionEntry)
+            var minDistance: Double = Double.MAX_VALUE
+            var closestLocation: Int
+            val entrylatitude = entry.key.latitude
+            val entrylongitude = entry.key.longitude
+            for(location in locations){
+                val distance = calculateDistance(entrylatitude,entrylongitude,location.latitude,location.latitude)
+                if(distance < minDistance){
+                    minDistance = distance
+                    closestLocation = location.id
+                }
+            }
+            //insertTemperaturePredictionEntryStmt.set
         }
 
     } catch (e: Exception) {

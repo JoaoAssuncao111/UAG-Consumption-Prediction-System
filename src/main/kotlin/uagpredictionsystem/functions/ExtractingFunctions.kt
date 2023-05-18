@@ -40,9 +40,15 @@ data class TemperaturePredictionEntry(
     val predictedDay: Int
 )
 
+//Prediction is always real (0)
+data class HumidityEntry(
+    val value: Double,
+    val date: String
+)
+
 fun extractObservations(lines: List<String>): List<String> {
     var rawObservations = ""
-    for (i in 3..11) {
+    for (i in 3..20) {
         rawObservations += lines[i]
     }
     val trimmedObservations = rawObservations.split(Regex("Obs:")).toMutableList()
@@ -99,7 +105,7 @@ fun extractLevelData(
 ): MutableList<LevelEntry> {
 
     val levelData: MutableList<LevelEntry> = mutableListOf()
-    var linesIdx = 15
+    var linesIdx = 22
 
     while (linesIdx < lines.size) {
         var locationOffset = 3
@@ -285,11 +291,11 @@ fun extractIpmaLocations(): HashMap<String, IpmaLocation> {
 }
 
 //humidity related
-fun extractIpmaStations(): List<IpmaLocation> {
+fun extractIpmaStations(): HashMap<Int, IpmaLocation> {
     val client = OkHttpClient()
     val request =
         Request.Builder().url("https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json").build()
-    val result = mutableListOf<IpmaLocation>()
+    val result = hashMapOf<Int, IpmaLocation>()
 
     val response = client.newCall(request).execute()
     val jsonData = response.body?.string()
@@ -300,20 +306,20 @@ fun extractIpmaStations(): List<IpmaLocation> {
         val latitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(1)
         val localEstacao = jsonObject.getJSONObject("properties").getString("localEstacao")
         val idEstacao = jsonObject.getJSONObject("properties").getInt("idEstacao")
-        result.add(IpmaLocation(idEstacao, localEstacao, latitude, longitude))
+        result[idEstacao] = (IpmaLocation(idEstacao, localEstacao, latitude, longitude))
 
     }
     return result
 }
 
-fun extractTemperaturePredictions(locations: HashMap<String, IpmaLocation>): HashMap<IpmaLocation,List<TemperaturePredictionEntry>> {
+fun extractTemperaturePredictions(locations: HashMap<String, IpmaLocation>): HashMap<IpmaLocation, List<TemperaturePredictionEntry>> {
     val client = OkHttpClient()
     val baseUrl = "http://api.ipma.pt/open-data/forecast/meteorology/cities/daily/"
     val result = hashMapOf<IpmaLocation, List<TemperaturePredictionEntry>>()
     for (location in locations) {
         val request =
             Request.Builder()
-                .url("http://api.ipma.pt/open-data/forecast/meteorology/cities/daily/${location.value.globalId}.json")
+                .url("${baseUrl}${location.value.globalId}.json")
                 .build()
         val response = client.newCall(request).execute()
         val jsonData = response.body?.string()
@@ -335,4 +341,38 @@ fun extractTemperaturePredictions(locations: HashMap<String, IpmaLocation>): Has
 
 }
 
+fun extractHumidity(stations: HashMap<Int, IpmaLocation>): HashMap<IpmaLocation, MutableList<HumidityEntry>> {
+    val humidityMap = hashMapOf<IpmaLocation, MutableList<HumidityEntry>>()
+    val client = OkHttpClient()
+    val request = Request.Builder()
+        .url("https://api.ipma.pt/open-data/observation/meteorology/stations/observations.json")
+        .build()
 
+    val response = client.newCall(request).execute()
+
+    if (response.isSuccessful) {
+        val jsonData = response.body?.string()
+        val data = JSONObject(jsonData)
+
+        for (timestampKey in data.keys()) {
+            val timestampObject = data.getJSONObject(timestampKey)
+
+            for (numberKey in timestampObject.keys()) {
+                val value = timestampObject.get(numberKey)
+                if (value is JSONObject) {
+                    val numberObject = value as JSONObject
+                    val humidity = numberObject.getDouble("humidade")
+                    val station = stations[numberKey.toInt()]
+                    val humidityEntry = HumidityEntry(humidity, timestampKey)
+
+                    if (station != null) {
+                        val entries = humidityMap.getOrDefault(station, mutableListOf())
+                        entries.add(humidityEntry)
+                        humidityMap[station] = entries
+                    }
+                }
+            }
+        }
+    }
+    return humidityMap
+}

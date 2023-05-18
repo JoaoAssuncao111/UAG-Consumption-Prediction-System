@@ -1,13 +1,9 @@
 
-import functions.*
-import uagpredictionsystem.functions.extractDeliveryData
-import uagpredictionsystem.functions.extractLevelData
-import uagpredictionsystem.functions.extractLevelLocations
-import uagpredictionsystem.functions.extractObservations
+import uagpredictionsystem.functions.*
 import java.io.File
 import java.nio.charset.Charset
 
-val excelFile = File("E:\\ISEL\\Projeto\\untitled1\\UAG_ Planeamento & Controlo.txt")
+val excelFile = File("E:\\ISEL\\Projeto\\untitled1\\18052023_UAG_ Planeamento & Controlo_Env.txt")
 const val url = "jdbc:postgresql://localhost:5432/postgres"
 const val user = "postgres"
 const val password = "joaopedro123"
@@ -25,6 +21,7 @@ fun main() {
     insertLevelData(levelData)
     val deliveryData = extractDeliveryData(levelLocations[0],levelLocations[1])
     insertDeliveryData(deliveryData)
+
 }
 
 

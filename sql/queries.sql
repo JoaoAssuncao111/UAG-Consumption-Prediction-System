@@ -1,0 +1,1 @@
+select * from temperature WHERE date_hour BETWEEN :startDate AND :endDate AND location = :location

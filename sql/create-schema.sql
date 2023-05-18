@@ -9,7 +9,9 @@ create table location
     id          serial primary key,
     observation varchar(500)       not null,
     name        varchar(50) unique not null,
-    distance    float
+    distance    float,
+    latitude    double precision,
+    longitude   double precision
 
 );
 
@@ -25,9 +27,10 @@ create table company
 
 create table temperature
 (
-    date_hour     timestamp primary key,
+    id serial primary key ,
+    date_hour     date,
     location      integer not null references Location (id),
-    prediction_id integer not null,
+    prediction_id integer not null references prediction (id),
     min_value     float   not null,
     max_value     float   not null
 
@@ -36,10 +39,9 @@ create table temperature
 create table humidity
 (
     date_hour     timestamp primary key,
-    location      integer not null references Location (id),
-    prediction_id integer not null,
-    min_value     float   not null,
-    max_value     float   not null
+    location      integer          not null references Location (id),
+    prediction_id integer          not null references prediction (id),
+    value         double precision not null
 
 );
 
@@ -47,7 +49,7 @@ create table level
 (
     id             serial primary key,
     date_hour      date,
-    prediction_id  integer not null,
+    prediction_id  integer not null references prediction (id),
     gas_level      float   not null,
     location       integer not null references Location (id),
     deposit_number integer not null,
@@ -74,4 +76,14 @@ create table delivery
     date_hour   date    not null,
     CONSTRAINT unique_delivery_entry UNIQUE (company, load_amount, location_id, time_of_day, date_hour)
 );
+
+insert into prediction
+values
+       ('1', '1 Day Prediction'),
+       ('2', '2 Day Prediction'),
+       ('3', '3 Day Prediction'),
+       ('4', '4 Day Prediction'),
+       ('5', '5 Day Prediction'),
+       ('6', '6 Day Prediction'),
+       ('7', '7 Day Prediction')
 
