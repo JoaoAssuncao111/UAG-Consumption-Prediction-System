@@ -2,6 +2,7 @@ package uagpredictionsystem.repository
 
 import uagpredictionsystem.functions.LevelEntry
 import uagpredictionsystem.models.Humidity
+import uagpredictionsystem.models.Level
 import uagpredictionsystem.models.Location
 import uagpredictionsystem.models.Temperature
 import java.time.LocalDate
@@ -11,7 +12,7 @@ interface Repository {
 
     fun getUags(): List<Location>
 
-    fun getLevels(startDate: LocalDate, endDate: LocalDate, location: Int): List<LevelEntry>
+    fun getLevels(startDate: LocalDate, endDate: LocalDate, location: Int): List<Level>
 
     fun getLocationById(id: Int): Location?
 

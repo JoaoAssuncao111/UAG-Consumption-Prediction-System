@@ -8,6 +8,8 @@ import url
 import user
 import java.sql.*
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 fun insertLocationData(
     url: String, user: String, password: String, locations: MutableList<String>, observations: List<String>
@@ -33,8 +35,8 @@ fun insertLevelData(levelData: List<LevelEntry>) {
     try {
         val levelConnection = DriverManager.getConnection(url, user, password)
         val insertLevelSql =
-            "INSERT INTO level(date_hour, prediction_id, gas_level, location, deposit_number, counter) VALUES (?, ?, ?, ?, ?, ?)" +
-                    "ON CONFLICT (date_hour, prediction_id, gas_level, location, deposit_number, counter) DO NOTHING;"
+            "INSERT INTO level(date_hour, prediction_id, gas_level, location, deposit_number, counter,consumption) VALUES (?, ?, ?, ?, ?, ?,?)" +
+                    "ON CONFLICT DO NOTHING;"
         val checkLocationSql = "SELECT * FROM location WHERE name = ?"
         val insertLocationSql = "INSERT INTO location (observation,name,distance) VALUES (?,?,?)"
 
@@ -72,6 +74,7 @@ fun insertLevelData(levelData: List<LevelEntry>) {
             insertLevelDataStatement.setInt(4, locationId)
             insertLevelDataStatement.setInt(5, entry.deposit)
             insertLevelDataStatement.setLong(6, entry.counter)
+            insertLevelDataStatement.setDouble(7, entry.consumption)
             insertLevelDataStatement.executeUpdate()
         }
 
@@ -146,47 +149,138 @@ fun insertDeliveryData(deliveryData: List<DeliveryEntry>) {
 
 }
 
-fun insertTemperaturePredictionData(temperatureData:  HashMap<IpmaLocation, List<TemperaturePredictionEntry>>) {
+fun insertConsumption(consumptionData: List<ConsumptionUpdateEntry>) {
+    val connection = DriverManager.getConnection(url, user, password)
+    val updateConsumptionEntry = "UPDATE level set consumption = ? where location = ? and date_hour = ?"
+    val locationById = "select * from location where name = ?"
+
+    for (entry in consumptionData) {
+        val locationName = entry.location
+        val locationByIdStmt = connection.prepareStatement(locationById)
+        locationByIdStmt.setString(1, locationName)
+        val resultSet = locationByIdStmt.executeQuery()
+
+        val locationId = if (resultSet.next()) {
+            resultSet.getInt("id")
+        } else {
+            throw SQLException("No location with name ${resultSet.getString("name")}")
+        }
+
+        val updateConsumptionEntryStmt = connection.prepareStatement(updateConsumptionEntry)
+        val consumption = entry.consumption
+
+        val dateFormat = SimpleDateFormat("EEE, dd/MM/yyyy")
+        val date = Date(dateFormat.parse(entry.date.replace("\"", "")).time)
+
+
+        updateConsumptionEntryStmt.setDouble(1, consumption)
+        updateConsumptionEntryStmt.setInt(2, locationId)
+        updateConsumptionEntryStmt.setDate(3, date)
+        updateConsumptionEntryStmt.executeUpdate()
+    }
+
+}
+
+fun insertTemperaturePredictionData(temperatureData: HashMap<IpmaLocation, List<TemperaturePredictionEntry>>) {
     try {
 
         val connection = DriverManager.getConnection(url, user, password)
         val insertTemperaturePredictionEntry =
             "INSERT INTO temperature(date_hour, location, prediction_id, min_value, max_value) VALUES (?, ?, ?, ?, ?)" +
-                    "ON CONFLICT(date_hour, location, prediction_id, min_value, max_value) DO NOTHING;"
+                    "ON CONFLICT DO NOTHING;"
 
         val locations = mutableListOf<Location>()
         val statement = connection.createStatement()
-        val resultSet = statement.executeQuery("SELECT * FROM LOCATION")
-        while(resultSet.next()){
+        val resultSet =
+            statement.executeQuery("SELECT * FROM LOCATION WHERE latitude IS NOT NULL AND longitude IS NOT NULL; ")
+        while (resultSet.next()) {
             val id = resultSet.getInt("id")
             val observation = resultSet.getString("observation")
             val name = resultSet.getString("name")
             val distance = resultSet.getDouble("distance")
             val latitude = resultSet.getDouble("latitude")
             val longitude = resultSet.getDouble("longitude")
-            locations.add(Location(id,observation,name,distance,latitude,longitude))
+            locations.add(Location(id, observation, name, distance, latitude, longitude))
         }
 
-        for(entry in temperatureData){
+        for (entry in temperatureData) {
             val insertTemperaturePredictionEntryStmt = connection.prepareStatement(insertTemperaturePredictionEntry)
             var minDistance: Double = Double.MAX_VALUE
-            var closestLocation: Int
-            val entrylatitude = entry.key.latitude
-            val entrylongitude = entry.key.longitude
-            for(location in locations){
-                val distance = calculateDistance(entrylatitude,entrylongitude,location.latitude,location.latitude)
-                if(distance < minDistance){
+            var closestLocation: Int = Int.MAX_VALUE
+            val entryLatitude = entry.key.latitude
+            val entryLongitude = entry.key.longitude
+
+            for (location in locations) {
+                val distance = calculateDistance(entryLatitude, entryLongitude, location.latitude, location.longitude)
+                if (distance < minDistance) {
                     minDistance = distance
                     closestLocation = location.id
                 }
             }
-            //insertTemperaturePredictionEntryStmt.set
+            for (reading in entry.value) {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+                val date = Date(dateFormat.parse(reading.date).time)
+                insertTemperaturePredictionEntryStmt.setDate(1, date)
+                insertTemperaturePredictionEntryStmt.setInt(2, closestLocation)
+                insertTemperaturePredictionEntryStmt.setInt(3, reading.predictedDay)
+                insertTemperaturePredictionEntryStmt.setDouble(4, reading.tMin)
+                insertTemperaturePredictionEntryStmt.setDouble(5, reading.tMax)
+                insertTemperaturePredictionEntryStmt.executeUpdate()
+            }
+
         }
 
     } catch (e: Exception) {
         e.printStackTrace()
     }
 }
+
+fun insertHumidityData(humidityData: HashMap<IpmaLocation, MutableList<HumidityEntry>>) {
+    val connection = DriverManager.getConnection(url, user, password)
+    val insertHumidityEntry =
+        "INSERT INTO humidity(date_hour, location, prediction_id,value) VALUES (?, ?, ?, ?)" +
+                "ON CONFLICT DO NOTHING;"
+    val locations = mutableListOf<Location>()
+    val statement = connection.createStatement()
+    val resultSet =
+        statement.executeQuery("SELECT * FROM LOCATION WHERE latitude IS NOT NULL AND longitude IS NOT NULL; ")
+    while (resultSet.next()) {
+        val id = resultSet.getInt("id")
+        val observation = resultSet.getString("observation")
+        val name = resultSet.getString("name")
+        val distance = resultSet.getDouble("distance")
+        val latitude = resultSet.getDouble("latitude")
+        val longitude = resultSet.getDouble("longitude")
+        locations.add(Location(id, observation, name, distance, latitude, longitude))
+    }
+    for (entry in humidityData) {
+        val insertHumidityEntryStmt = connection.prepareStatement(insertHumidityEntry)
+        var minDistance: Double = Double.MAX_VALUE
+        var closestLocation: Int = Int.MAX_VALUE
+        val entryLatitude = entry.key.latitude
+        val entryLongitude = entry.key.longitude
+
+        for (location in locations) {
+            val distance = calculateDistance(entryLatitude, entryLongitude, location.latitude, location.longitude)
+            if (distance < minDistance) {
+                minDistance = distance
+                closestLocation = location.id
+            }
+        }
+        for (reading in entry.value) {
+            val dateTime = LocalDateTime.parse(reading.date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))
+            val timestamp = Timestamp.valueOf(dateTime)
+
+            insertHumidityEntryStmt.setTimestamp(1, timestamp)
+            insertHumidityEntryStmt.setInt(2, closestLocation)
+            insertHumidityEntryStmt.setInt(3, 0)
+            insertHumidityEntryStmt.setDouble(4, reading.value)
+            insertHumidityEntryStmt.executeUpdate()
+        }
+
+    }
+}
+
 
 
 

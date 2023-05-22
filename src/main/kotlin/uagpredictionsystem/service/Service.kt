@@ -30,6 +30,7 @@ class Service(private val transactionManager: TransactionManager) {
             when (readingType) {
                 "temperature" -> repository.getTemperature(newStartDate, newEndDate, id)
                 "humidity" -> repository.getHumidity(newStartDate,newEndDate,id)
+                "levels" -> repository.getLevels(newStartDate,newEndDate,id)
                 else ->
                     mutableListOf()
             }

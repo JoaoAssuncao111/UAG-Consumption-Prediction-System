@@ -13,19 +13,18 @@ data class TemperatureEntry(
 )
 
 fun main() {
-    val maxTemperatures =
+  /*  val maxTemperatures =
         extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-max/", "mtxmx")
     val minTemperature =
-        extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-min/", "mtnmn")
-    val ipmaLocations = extractIpmaLocations()
+        extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-min/", "mtnmn")*/
 
+    val ipmaLocations = extractIpmaLocations()
     val ipmaStations = extractIpmaStations()
 
     val temperaturePredictions = extractTemperaturePredictions(ipmaLocations)
     val humidityEntries = extractHumidity(ipmaStations)
 
-    for (element in humidityEntries) {
-        println(element)
-    }
+    insertTemperaturePredictionData(temperaturePredictions)
+    insertHumidityData(humidityEntries)
 }
 

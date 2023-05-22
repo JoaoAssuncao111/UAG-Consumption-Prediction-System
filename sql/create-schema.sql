@@ -7,7 +7,7 @@ create table prediction
 create table location
 (
     id          serial primary key,
-    observation varchar(500)       not null,
+    observation varchar(2000)      not null,
     name        varchar(50) unique not null,
     distance    float,
     latitude    double precision,
@@ -27,7 +27,7 @@ create table company
 
 create table temperature
 (
-    id serial primary key ,
+    id            serial primary key,
     date_hour     date,
     location      integer not null references Location (id),
     prediction_id integer not null references prediction (id),
@@ -54,7 +54,8 @@ create table level
     location       integer not null references Location (id),
     deposit_number integer not null,
     counter        bigint  not null,
-    CONSTRAINT unique_level_entry UNIQUE (date_hour, prediction_id, gas_level, location, deposit_number, counter)
+    consumption    double precision,
+    CONSTRAINT unique_level_entry UNIQUE (date_hour, prediction_id, gas_level, location, deposit_number, counter,consumption)
 );
 
 create table planned_delivery
@@ -78,7 +79,8 @@ create table delivery
 );
 
 insert into prediction
-values
+values ('99', 'dummy'),
+       ('0', 'Real'),
        ('1', '1 Day Prediction'),
        ('2', '2 Day Prediction'),
        ('3', '3 Day Prediction'),

@@ -19,8 +19,9 @@ fun main() {
     val levelLocations = extractLevelLocations()
     val levelData = extractLevelData(levelLocations[0], levelLocations[2])
     insertLevelData(levelData)
-    val deliveryData = extractDeliveryData(levelLocations[0],levelLocations[1])
-    insertDeliveryData(deliveryData)
+    val deliveryAndConsumptionData = extractDeliveryData(levelLocations[0],levelLocations[1])
+    insertDeliveryData(deliveryAndConsumptionData.first)
+    insertConsumption(deliveryAndConsumptionData.second)
 
 }
 

@@ -1,8 +1,8 @@
 package uagpredictionsystem.repository.jdbi
 
 import org.jdbi.v3.core.Handle
-import uagpredictionsystem.functions.LevelEntry
 import uagpredictionsystem.models.Humidity
+import uagpredictionsystem.models.Level
 import uagpredictionsystem.models.Location
 import uagpredictionsystem.models.Temperature
 import uagpredictionsystem.repository.Repository
@@ -18,13 +18,13 @@ class Repository(
             .list()
     }
 
-    override fun getLevels(startDate: LocalDate, endDate: LocalDate, location: Int): List<LevelEntry> {
+    override fun getLevels(startDate: LocalDate, endDate: LocalDate, location: Int): List<Level> {
         return handle.createQuery("select * from LEVEL WHERE date_hour" +
-                " BETWEEN 'start_date' AND :end_date AND location = :location")
+                " BETWEEN :startDate AND :endDate AND location = :location")
             .bind("startDate", startDate)
             .bind("endDate", endDate)
             .bind("location",location)
-            .mapTo(LevelEntry::class.java)
+            .mapTo(Level::class.java)
             .list()
     }
 

@@ -14,7 +14,8 @@ data class LevelEntry(
     var deposit: Int,
     var hour: String,
     var level: Float,
-    var counter: Long
+    var counter: Long,
+    var consumption: Double
 )
 
 data class DeliveryEntry(
@@ -22,6 +23,12 @@ data class DeliveryEntry(
     var loadAmount: Float,
     var location: String,
     var timeOfDay: String,
+    var date: String
+)
+
+data class ConsumptionUpdateEntry(
+    var consumption: Double,
+    var location: String,
     var date: String
 )
 
@@ -48,17 +55,19 @@ data class HumidityEntry(
 
 fun extractObservations(lines: List<String>): List<String> {
     var rawObservations = ""
-    for (i in 3..20) {
+    for (i in 3..18) {
         rawObservations += lines[i]
     }
-    val trimmedObservations = rawObservations.split(Regex("Obs:")).toMutableList()
+    var trimmedObservations = rawObservations.split(Regex("Obs:")).toMutableList()
     trimmedObservations.removeFirst()
+    trimmedObservations = trimmedObservations.map { it.replace("\t", "") }.toMutableList()
     return trimmedObservations
 }
 
 fun extractLevelLocations(): List<MutableList<String>> {
-    val rawLevelLocations1 = lines[13].split(Regex("\\t+")).toMutableList(); rawLevelLocations1.removeFirst()
-    val rawLevelLocations2 = lines[12].split(Regex("\\t+")).toMutableList(); rawLevelLocations2.removeFirst()
+    val rawLevelLocations1 = lines[20].split(Regex("\\t+"))
+        .toMutableList(); rawLevelLocations1.removeFirst();
+    val rawLevelLocations2 = lines[19].split(Regex("\\t+")).toMutableList(); rawLevelLocations2.removeFirst()
     val locationDeposits = mutableListOf<String>()
     val depositNumbers = mutableListOf<String>()
     val locations1 = mutableListOf<String>()
@@ -113,7 +122,8 @@ fun extractLevelData(
         val currentLine = lines[linesIdx].split(Regex("\\t")).toMutableList()
         for (i in 0..locationDeposits.size) {
 
-            val entry = LevelEntry(currentLine[1], "", 1, "", 0.0f, 0)
+            val entry = LevelEntry(currentLine[1], "", 1, "", 0.0f, 0, 0.0)
+
             if (hasCounter) {
                 if ((currentLine[locationOffset + 1] == "0.00" || currentLine[locationOffset + 1] == "") && i < locations1.size) {
                     locationOffset += 3
@@ -125,7 +135,7 @@ fun extractLevelData(
                         hasCounter = false;
                         continue
                     }
-                    //Location and depoisit
+                    //Location and deposit
                     if (locationDeposits[i].contains("-")) {
                         entry.location = locationDeposits[i].split("-")[0]
                         entry.deposit = locationDeposits[i].substringAfterLast(" ").trim().toInt()
@@ -160,48 +170,121 @@ fun extractLevelData(
     return levelData
 }
 
-fun extractDeliveryData(locations1: List<String>, locations2: List<String>): List<DeliveryEntry> {
+//Also extracts consumption level, not optimal maybe fix later
+fun extractDeliveryData(
+    locations1: List<String>,
+    locations2: List<String>
+): Pair<List<DeliveryEntry>, List<ConsumptionUpdateEntry>> {
     val deliveryData = mutableListOf<DeliveryEntry>()
-    var linesIdx = 15
+    val consumptionList = mutableListOf<ConsumptionUpdateEntry>()
+    var linesIdx = 22//22
     //fix magic numbers via excel reading library if possible
     val portimaoOffset = 9
     val doubleDepositOffset = 10
     val singleDepositOffset = 6
-    while (linesIdx < 30) {
+    while (linesIdx < lines.size) {
         var deliveryIdx = 7 + locations1.size * 3 + locations2.size * 2
         val currentLine = lines[linesIdx].split(Regex("\\t")).toMutableList()
+        val date = currentLine[1]
+
+        if (!currentLine[1].contains("/")) break
         for (i in 0 until headerLocations.size) {
+            val location = headerLocations[i]
+            //Contains a Delivery
             deliveryIdx += if (currentLine[deliveryIdx].contains("C")) {
                 val company = currentLine[deliveryIdx + 2]
-                val load = lines[13].split(Regex("\\t"))[deliveryIdx].split("%")[0].toFloat()
-                val location = headerLocations[i]
+                val load =
+                    lines[20].split(Regex("\\t"))[deliveryIdx].split("%")[0].toFloat() * currentLine[deliveryIdx].split(
+                        "C"
+                    )[0].toFloat()
                 val timeOfDay = currentLine[deliveryIdx + 1]
-                val date = currentLine[1]
                 val entry = DeliveryEntry(company, load, location, timeOfDay, date)
                 deliveryData.add(entry)
+
                 if (currentLine[deliveryIdx + 6].matches(Regex("\\d{2}")) && headerLocations[i] == "Portimão") {
+                    val number = currentLine[deliveryIdx + 8].toDoubleOrNull()
+                    if (number != null) {
+                        consumptionList.add(
+                            ConsumptionUpdateEntry(
+                                currentLine[deliveryIdx + 8].toDouble(),
+                                location,
+                                date
+                            )
+                        )
+                    }
                     portimaoOffset
                 } else if (currentLine[deliveryIdx + 6].matches(Regex("\\d{2}")) && headerLocations[i] != "Portimão") {
+                    val number = currentLine[deliveryIdx + 7].toDoubleOrNull()
+                    if (number != null) {
+                        consumptionList.add(
+                            ConsumptionUpdateEntry(
+                                currentLine[deliveryIdx + 7].toDouble(),
+                                location,
+                                date
+                            )
+                        )
+                    }
                     doubleDepositOffset
                 } else {
+                    val number = currentLine[deliveryIdx + 5].toDoubleOrNull()
+                    if (number != null) {
+                        consumptionList.add(
+                            ConsumptionUpdateEntry(
+                                currentLine[deliveryIdx + 5].toDouble(),
+                                location,
+                                date
+                            )
+                        )
+                    }
                     singleDepositOffset
                 }
             } else if (currentLine[deliveryIdx + 4].matches(Regex("\\d{2}")) && headerLocations[i] == "Portimão") {
+                val number = currentLine[deliveryIdx + 8].toDoubleOrNull()
+                if (number != null) {
+                    consumptionList.add(
+                        ConsumptionUpdateEntry(
+                            currentLine[deliveryIdx + 8].toDouble(),
+                            location,
+                            date
+                        )
+                    )
+                }
                 portimaoOffset
             } else if (currentLine[deliveryIdx + 4].matches(Regex("\\d{2}")) && headerLocations[i] != "Portimão") {
+
+                val number = currentLine[deliveryIdx + 7].toDoubleOrNull()
+                if (number != null) {
+                    consumptionList.add(
+                        ConsumptionUpdateEntry(
+                            currentLine[deliveryIdx + 7].toDouble(),
+                            location,
+                            date
+                        )
+                    )
+                }
                 doubleDepositOffset
             } else {
+                val number = currentLine[deliveryIdx + 5].toDoubleOrNull()
+                if (number != null) {
+                    consumptionList.add(
+                        ConsumptionUpdateEntry(
+                            currentLine[deliveryIdx + 5].toDouble(),
+                            location,
+                            date
+                        )
+                    )
+                }
                 singleDepositOffset
             }
-
         }
+        println(deliveryData.last())
         linesIdx++
     }
 
     for (entry in deliveryData) {
         println(entry)
     }
-    return deliveryData
+    return Pair(deliveryData, consumptionList)
 }
 
 fun extractTemperature(temperatureUrl: String, temperatureSignature: String): MutableList<TemperatureEntry> {
