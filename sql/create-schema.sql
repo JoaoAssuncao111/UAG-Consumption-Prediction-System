@@ -32,17 +32,19 @@ create table temperature
     location      integer not null references Location (id),
     prediction_id integer not null references prediction (id),
     min_value     float   not null,
-    max_value     float   not null
+    max_value     float   not null,
+    CONSTRAINT unique_temperature_entry UNIQUE (date_hour, location, prediction_id, min_value,max_value)
 
 );
 
 create table humidity
 (
-    date_hour     timestamp primary key,
+    id            serial primary key,
+    date_hour     timestamp,
     location      integer          not null references Location (id),
     prediction_id integer          not null references prediction (id),
-    value         double precision not null
-
+    value         double precision not null,
+    CONSTRAINT unique_humidity_entry UNIQUE (date_hour, location, prediction_id, value)
 );
 
 create table level
@@ -55,7 +57,8 @@ create table level
     deposit_number integer not null,
     counter        bigint  not null,
     consumption    double precision,
-    CONSTRAINT unique_level_entry UNIQUE (date_hour, prediction_id, gas_level, location, deposit_number, counter,consumption)
+    CONSTRAINT unique_level_entry UNIQUE (date_hour, prediction_id, gas_level, location, deposit_number, counter,
+                                          consumption)
 );
 
 create table planned_delivery

@@ -114,7 +114,7 @@ fun extractLevelData(
 ): MutableList<LevelEntry> {
 
     val levelData: MutableList<LevelEntry> = mutableListOf()
-    var linesIdx = 22
+    var linesIdx = 871 //22
 
     while (linesIdx < lines.size) {
         var locationOffset = 3

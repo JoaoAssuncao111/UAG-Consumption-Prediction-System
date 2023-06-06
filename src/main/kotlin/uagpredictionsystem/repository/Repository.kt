@@ -1,6 +1,5 @@
 package uagpredictionsystem.repository
 
-import uagpredictionsystem.functions.LevelEntry
 import uagpredictionsystem.models.Humidity
 import uagpredictionsystem.models.Level
 import uagpredictionsystem.models.Location

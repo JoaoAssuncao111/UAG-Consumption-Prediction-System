@@ -211,7 +211,7 @@ set latitude = 41.919056, longitude = -8.594472
 where name = 'Paredes de Coura';
 
 update location
-set latitude = '40.26996', longitude = '-7.98865'
+set latitude = 40.26996, longitude = -7.98865
 where name = 'Posto de Urjais';
 
 update location
@@ -221,6 +221,30 @@ where name = 'Ribeira de Pen';
 update location
 set latitude = 41.497892, longitude = -7.635853
 where name = 'Vila Pouca de Aguiar';
+
+update location
+set latitude = 40.361389, longitude = -7.8425
+where name = 'Oliveira do Hospital';
+
+update location
+set latitude = 41.154205, longitude = -7.898454
+where name = 'Mesão Frio';
+
+update location
+set latitude = 41.623198, longitude = -8.200724
+where name = 'Vieira do Minho';
+
+update location
+set latitude = 41.257136, longitude = -7.767356
+where name = 'Cumieira';
+
+update location
+set latitude = 42.062167, longitude = -8.517334
+where name = 'Monção';
+
+update location
+set latitude = 42.11901, longitude = -8.277916
+where name = 'Melgaço';
 
 
 

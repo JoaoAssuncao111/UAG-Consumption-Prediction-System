@@ -7,12 +7,7 @@ import uagpredictionsystem.service.Service
 
 @RestController
 class Controller(private val service: Service) {
-
-    @GetMapping(Uris.HOME)
-    fun testHome(): ResponseEntity<*> {
-        return ResponseEntity.status(200).body("")
-    }
-
+    
     @GetMapping(Uris.UAGS)
     fun getUags(): ResponseEntity<*> {
         val res = service.getUags()

@@ -19,7 +19,7 @@ data class Level(
     val location: Int,
     @ColumnName("deposit_number")
     val depositNumber: Int,
-    @ColumnName("location")
+    @ColumnName("counter")
     val counter: Long,
     @ColumnName("consumption")
     val consumption: Double
