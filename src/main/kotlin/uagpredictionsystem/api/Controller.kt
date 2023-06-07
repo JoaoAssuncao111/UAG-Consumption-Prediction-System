@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import uagpredictionsystem.api.models.ReadingInputModel
 import uagpredictionsystem.service.Service
-
+@CrossOrigin
 @RestController
 class Controller(private val service: Service) {
     
