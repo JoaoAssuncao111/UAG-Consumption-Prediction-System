@@ -1,0 +1,19 @@
+.table-container {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .table-row {
+    display: table-row;
+  }
+
+  .table-cell {
+    display: table-cell;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .table-cell:first-child {
+    font-weight: bold;
+  }

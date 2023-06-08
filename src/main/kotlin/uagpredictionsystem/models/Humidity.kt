@@ -1,13 +1,13 @@
 package uagpredictionsystem.models
 
 import org.jdbi.v3.core.mapper.reflect.ColumnName
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class Humidity(
     @ColumnName("id")
     val id: Int,
     @ColumnName("date_hour")
-    val dateHour: LocalDate,
+    val dateHour: LocalDateTime,
 
     @ColumnName("location")
     val location: Int,

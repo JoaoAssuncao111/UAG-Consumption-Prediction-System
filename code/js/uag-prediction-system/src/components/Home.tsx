@@ -10,7 +10,7 @@ export function Home() {
   return (
     <div>
     <h1>Home</h1>
-    <Link to="/temperature">Data Representation</Link>
+    <Link to="/readings">Data Representation</Link>
     <Link to="/uags">Todas as UAGS</Link>
   </div>
   );

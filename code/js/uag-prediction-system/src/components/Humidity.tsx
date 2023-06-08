@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ReadingDataInput } from './ReadingDataInput';
 import { api } from '../api';
 import { format } from 'date-fns';
-import {Link} from "react-router-dom"
 import "../styles.css"
+import {Link} from "react-router-dom"
 
-export function Temperature() {
+export function Humidity() {
     const [location, setLocation] = useState(0);
     const [startDate, setStartDate] = useState(undefined);
     const [endDate, setEndDate] = useState(undefined);
@@ -22,7 +22,7 @@ export function Temperature() {
         console.log(formattedEndDate)
         try {
             const resp =
-                await fetch(`${api}/reading/temperature?startDate=${formattedStartDate}&endDate=${formattedEndDate}&location=${location}`)
+                await fetch(`${api}/reading/humidity?startDate=${formattedStartDate}&endDate=${formattedEndDate}&location=${location}`)
 
             const json = await resp.json()
             if (await json) {
@@ -51,14 +51,13 @@ export function Temperature() {
             </div>
             <div className='table-container'>
                 {data.map(item =>
-                <div className="table-row" key={item.username}>
-                    <div className='table-cell'>Id {item.id}</div>
-                    <div className='table-cell'>Data {item.dateHour}</div>
-                    <div className='table-cell'>Localidade {item.location}</div>
-                    <div className='table-cell'>Previsão {item.predictionId}</div>
-                    <div className='table-cell'>Temperatura Mínima {item.minValue}</div>
-                    <div className='table-cell'>Temperatura Máxima {item.maxValue}</div>
-                </div>)}
+                    <div className="table-row" key={item.username}>
+                        <div className='table-cell'>Id {item.id}</div>
+                        <div className='table-cell'>Data {item.dateHour}</div>
+                        <div className='table-cell'>Localidade {item.location}</div>
+                        <div className='table-cell'>Previsão {item.predictionId}</div>
+                        <div className='table-cell'>Humidade {item.value}</div>
+                    </div>)}
             </div>
 
 
