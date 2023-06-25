@@ -22,7 +22,6 @@ create table company
     market_share float              not null,
     daily_fleet  int                not null
 
-
 );
 
 create table temperature

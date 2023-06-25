@@ -3,7 +3,7 @@ import uagpredictionsystem.functions.*
 import java.io.File
 import java.nio.charset.Charset
 
-val excelFile = File("E:\\ISEL\\Projeto\\untitled1\\18052023_UAG_ Planeamento & Controlo_Env.txt")
+val excelFile = File("E:\\ISEL\\Projeto\\uag-prediction-system\\18052023_UAG_ Planeamento & Controlo_Env.txt")
 const val url = "jdbc:postgresql://localhost:5432/postgres"
 const val user = "postgres"
 const val password = "joaopedro123"

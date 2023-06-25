@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Tests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-05-22T19:34:01" hostname="DESKTOP-TU12RMC" time="0.777">
+<testsuite name="Tests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-06-17T16:03:27" hostname="DESKTOP-TU12RMC" time="0.756">
   <properties/>
-  <testcase name="testHaversineFormula()" classname="Tests" time="0.777"/>
+  <testcase name="testHaversineFormula()" classname="Tests" time="0.756"/>
   <system-out><![CDATA[Sines distance: 94.18919700145098
 Horta distance: 1768.6642110778994
 Funchal distance: 913.3898758124705

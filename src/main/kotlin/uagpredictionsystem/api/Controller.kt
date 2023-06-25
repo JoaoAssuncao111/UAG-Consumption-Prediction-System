@@ -20,4 +20,10 @@ class Controller(private val service: Service) {
         val res = service.getReading(input.startDate, input.endDate, input.location, readingType)
         return ResponseEntity.status(200).body(res)
     }
+    @GetMapping(Uris.TEMP_CONSM)
+    fun getTemperatureAndConsumption(@ModelAttribute input: ReadingInputModel): ResponseEntity<*> {
+        val res = service.getTempAndCons(input.startDate, input.endDate, input.location)
+        return ResponseEntity.status(200).body(res)
+    }
+
 }
