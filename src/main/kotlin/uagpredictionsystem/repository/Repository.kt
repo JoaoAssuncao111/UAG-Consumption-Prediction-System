@@ -18,5 +18,8 @@ interface Repository {
     fun getTemperature(startDate: LocalDate, endDate: LocalDate, location: Int): List<Temperature>
 
     fun getHumidity(startDate: LocalDate, endDate: LocalDate, location: Int): List<Humidity>
+
     fun get9PastLevels(startDate: LocalDate, endDate: LocalDate, location: Int): List<Level>
+
+    fun updateTraining(id: Int, training: String): Int
 }

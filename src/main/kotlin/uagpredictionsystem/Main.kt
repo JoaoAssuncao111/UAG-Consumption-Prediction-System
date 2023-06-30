@@ -3,7 +3,7 @@ import uagpredictionsystem.functions.*
 import java.io.File
 import java.nio.charset.Charset
 
-val excelFile = File("E:\\ISEL\\Projeto\\uag-prediction-system\\18052023_UAG_ Planeamento & Controlo_Env.txt")
+val excelFile = File("E:\\ISEL\\Projeto\\uag-prediction-system\\18052023_UAG_ Planeamento & Controlo_Env2.txt")
 const val url = "jdbc:postgresql://localhost:5432/postgres"
 const val user = "postgres"
 const val password = "joaopedro123"
@@ -20,6 +20,7 @@ fun main() {
     val levelData = extractLevelData(levelLocations[0], levelLocations[2])
     insertLevelData(levelData)
     val deliveryAndConsumptionData = extractDeliveryData(levelLocations[0],levelLocations[1])
+    val consumptionVal = deliveryAndConsumptionData.second.filter { entry -> entry.location == "Arcos de Valdevez" }
     insertDeliveryData(deliveryAndConsumptionData.first)
     insertConsumption(deliveryAndConsumptionData.second)
 

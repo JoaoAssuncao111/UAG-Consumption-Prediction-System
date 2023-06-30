@@ -66,4 +66,11 @@ class Repository(
             .list()
     }
 
+    override fun updateTraining(id: Int,training: String): Int {
+        return handle.createUpdate("update location set training = CAST(:training AS json) where id = :id")
+            .bind("id",id)
+            .bind("training",training)
+            .execute()
+    }
+
 }

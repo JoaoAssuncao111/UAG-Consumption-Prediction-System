@@ -1,6 +1,8 @@
 package uagpredictionsystem
 
 import uagpredictionsystem.models.Location
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.sql.Connection
 import java.text.Normalizer
 import kotlin.math.*
@@ -49,4 +51,32 @@ fun getAllLocationsFromDb(connection: Connection): HashMap<String,Location>{
         locations[key] = Location(id, observation, name, distance, latitude, longitude)
     }
     return locations
+}
+
+fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String{
+    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\ModuloTreino(1).py"
+
+    val escapedTemperatures = temperatures.replace("\"", "\\\"")
+    val escapedConsumptions = consumptions.replace("\"", "\\\"")
+
+    val processBuilder = ProcessBuilder("python", pythonScript, escapedTemperatures, escapedConsumptions)
+
+    processBuilder.redirectErrorStream(true)
+    val process = processBuilder.start()
+
+    val reader = BufferedReader(InputStreamReader(process.inputStream))
+    var line: String?
+    var lastLine: String? = null
+    while (reader.readLine().also { line = it } != null) {
+        lastLine = line
+    }
+
+    val exitCode = process.waitFor()
+    if (exitCode == 0) {
+        println("Python script executed successfully.")
+    } else {
+        println("Python script encountered an error. Exit code: $exitCode")
+    }
+
+    return lastLine ?: "{}"
 }

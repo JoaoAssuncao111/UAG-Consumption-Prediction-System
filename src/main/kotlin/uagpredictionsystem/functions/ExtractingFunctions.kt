@@ -158,7 +158,10 @@ fun extractLevelData(
                 //has no counter
             } else {
                 if ((!currentLine[locationOffset].contains("-")) && currentLine[locationOffset] != "") {
+                    entry.deposit = locationDeposits[i-1].substringAfterLast(" ").trim().toInt()
+
                     entry.location = locationDeposits[i - 1]
+
                     entry.level = currentLine[locationOffset].toFloat()
                     levelData.add(entry)
                 }
@@ -250,7 +253,7 @@ fun extractDeliveryData(
                     )
                 }
                 portimaoOffset
-            } else if (currentLine[deliveryIdx + 4].matches(Regex("\\d{2}")) && headerLocations[i] != "Portimão") {
+            } else if ((currentLine[deliveryIdx + 4].matches(Regex("\\d{2}")) || (currentLine[deliveryIdx + 4].matches(Regex("\\d{3}")))) && headerLocations[i] != "Portimão") {
 
                 val number = currentLine[deliveryIdx + 7].toDoubleOrNull()
                 if (number != null) {

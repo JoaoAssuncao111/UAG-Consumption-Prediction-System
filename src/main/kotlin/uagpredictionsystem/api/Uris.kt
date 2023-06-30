@@ -6,5 +6,6 @@ object Uris {
     const val UAGS = "/uags"
     const val READINGS = "/reading/{readingType}"
     const val TEMP_CONSM = "/tempcons"
+    const val TRAINING = "/training"
 
 }

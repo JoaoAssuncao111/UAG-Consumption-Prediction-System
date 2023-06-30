@@ -27,6 +27,7 @@ dependencies {
     implementation("org.jdbi:jdbi3-core:3.37.1")
     implementation("org.springframework.security:spring-security-core:6.0.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("com.google.code.gson:gson:2.8.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
