@@ -11,13 +11,23 @@ export function Temperature() {
     const [startDate, setStartDate] = useState(undefined);
     const [endDate, setEndDate] = useState(undefined);
     const [data, setData] = useState([])
+    const [error, setError] = useState("")
+    const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setError("")
+        }, 3000);
+      }, [error]);
 
 
+   
     const handleSubmit = async () => {
         if (!(startDate && endDate)) {
-            console.log("error")
+            setError('Por favor insira a Janela Temporal');
             return
         }
+
         const formattedStartDate = format(startDate, 'yyyy-MM-dd');
         const formattedEndDate = format(endDate, 'yyyy-MM-dd');
         console.log(formattedEndDate)
@@ -31,6 +41,7 @@ export function Temperature() {
                 setData(sortedArray)
                 console.log(json)
             }
+            if( await data.length == 0) setError("Não existem leituras para os dados inseridos")
         } catch (error) {
             console.log(error)
         }
@@ -46,50 +57,20 @@ export function Temperature() {
                     setStartDate={setStartDate}
                     endDate={endDate}
                     setEndDate={setEndDate}
+                    isFetchButtonDisabled={isFetchButtonDisabled}
+                    setIsFetchButtonDisabled={setisFetchButtonDisabled}
                 />
             </div>
 
             <div>
-                <button onClick={handleSubmit}>Fetch</button>
+                <button disabled= {isFetchButtonDisabled} onClick={handleSubmit}>Fetch</button>
             </div>
             {data.length > 0 ? (
                 <TemperatureChart data={data} />
             ) : null}
+            <div>{error}</div>
         </div>
     );
 }
 
-/*
-return (
-    <div>
-        <div>
-            <Link to="/home">Home</Link>
-            <ReadingDataInput
-                location={location}
-                setLocation={setLocation}
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
-            />
-        </div>
-        <div>
-            <button onClick={handleSubmit}>Fetch</button>
-        </div>
-        <div className='table-container'>
-            {data.map(item =>
-            <div className="table-row" key={item.username}>
-                <div className='table-cell'>Id {item.id}</div>
-                <div className='table-cell'>Data {item.dateHour}</div>
-                <div className='table-cell'>Localidade {item.location}</div>
-                <div className='table-cell'>Previsão {item.predictionId}</div>
-                <div className='table-cell'>Temperatura Mínima {item.minValue}</div>
-                <div className='table-cell'>Temperatura Máxima {item.maxValue}</div>
-            </div>)}
-        </div>
 
-
-    </div>
-)
-            }
-*/

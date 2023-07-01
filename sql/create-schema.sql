@@ -60,15 +60,6 @@ create table level
                                           consumption)
 );
 
-create table planned_delivery
-(
-    id          serial primary key,
-    company     integer not null,
-    load_amount float   not null,
-    location_id integer not null references Location (id),
-    time_of_day varchar(10) check ( time_of_day in ('M', 'T', 'M/T', ''))
-);
-
 create table delivery
 (
     id          serial primary key,

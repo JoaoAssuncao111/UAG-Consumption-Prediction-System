@@ -1,12 +1,12 @@
 import React from 'react';
-import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area, ResponsiveContainer } from 'recharts';
+import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { format } from "date-fns";
 
 export function LevelsChart({ data }) {
   return (
     <div style={{ width: '90%' }}>
       <ResponsiveContainer width="100%" height={720}>
-        <AreaChart data={data}>
+        <BarChart data={data}>
           <XAxis
             label={{ value: "Data" }}
             dataKey={"date"}
@@ -31,7 +31,7 @@ export function LevelsChart({ data }) {
 
           <Legend />
 
-          <Area
+          <Bar
             name="Consumo"
             type="monotone"
             dataKey="consumption"
@@ -39,7 +39,7 @@ export function LevelsChart({ data }) {
             fill="#FF0021"
           />
 
-          <Area
+          <Bar
             name="Niveis"
             type="monotone"
             dataKey="gasLevel"
@@ -47,7 +47,7 @@ export function LevelsChart({ data }) {
             fill="#2c7ef2"
           />
 
-        </AreaChart>
+        </BarChart>
       </ResponsiveContainer>
     </div>
   );

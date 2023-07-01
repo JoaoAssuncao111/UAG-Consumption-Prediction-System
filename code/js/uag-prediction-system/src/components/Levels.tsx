@@ -11,6 +11,13 @@ export function Levels() {
   const [endDate, setEndDate] = useState(undefined);
   const [selectedDeposit, setSelectedDeposit] = useState('all');
   const [data, setData] = useState([]);
+  const [isFetchButtonDisabled,setisFetchButtonDisabled] = useState(false)
+  const [error, setError] = useState("")
+  useEffect(() => {
+    setTimeout(() => {
+        setError("")
+    }, 3000);
+  }, [error]);
 
   const handleSubmit = async () => {
     if (!(startDate && endDate)) {
@@ -55,6 +62,8 @@ export function Levels() {
           setStartDate={setStartDate}
           endDate={endDate}
           setEndDate={setEndDate}
+          isFetchButtonDisabled={isFetchButtonDisabled}
+          setIsFetchButtonDisabled={setisFetchButtonDisabled}
         />
       </div>
 
@@ -100,6 +109,7 @@ export function Levels() {
           </>
         ) : null}
       </div>
+      <div>{error}</div>
     </div>
   );
 }

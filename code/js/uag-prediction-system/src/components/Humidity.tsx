@@ -11,8 +11,17 @@ export function Humidity() {
     const [startDate, setStartDate] = useState(undefined);
     const [endDate, setEndDate] = useState(undefined);
     const [data, setData] = useState([])
+    const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(false)
+    const [error, setError] = useState("")
+
+    useEffect(() => {
+        setTimeout(() => {
+            setError("")
+        }, 3000);
+    }, [error]);
 
     const handleSubmit = async () => {
+        console.log(location)
         if (!(startDate && endDate)) {
             console.log("error")
             return
@@ -37,58 +46,30 @@ export function Humidity() {
     return (
         <div>
             <div>
-            <Link to="/home">Home</Link>
-            <ReadingDataInput
-                location={location}
-                setLocation={setLocation}
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
-            />
+                <Link to="/home">Home</Link>
+                <ReadingDataInput
+                    location={location}
+                    setLocation={setLocation}
+                    startDate={startDate}
+                    setStartDate={setStartDate}
+                    endDate={endDate}
+                    setEndDate={setEndDate}
+                    isFetchButtonDisabled={isFetchButtonDisabled}
+                    setIsFetchButtonDisabled={setisFetchButtonDisabled}
+
+                />
             </div>
-        <div>
-            <button onClick={handleSubmit}>Fetch</button>
-            <h1>{data.length == 0 ? null : "Gráfico de Humidade" }</h1>
-            {data.length > 0 ? (
-                <HumidityChart data={data} />
-            ) : (
-                null
-            )}
-        </div>
+            <div>
+                <button onClick={handleSubmit}>Fetch</button>
+                <h1>{data.length == 0 ? null : "Gráfico de Humidade"}</h1>
+                {data.length > 0 ? (
+                    <HumidityChart data={data} />
+                ) : (
+                    null
+                )}
+            </div>
+            <div>{error}</div>
         </div>
     );
 };
 
-/*return (
-    <div>
-        <div>
-            <Link to="/home">Home</Link>
-            <ReadingDataInput
-                location={location}
-                setLocation={setLocation}
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
-            />
-        </div>
-        <div>
-            <button onClick={handleSubmit}>Fetch</button>
-        </div>
-        <div className='table-container'>
-            {data.map(item =>
-                <div className="table-row" key={item.username}>
-                    <div className='table-cell'>Id {item.id}</div>
-                    <div className='table-cell'>Data {item.dateHour}</div>
-                    <div className='table-cell'>Localidade {item.location}</div>
-                    <div className='table-cell'>Previsão {item.predictionId}</div>
-                    <div className='table-cell'>Humidade {item.value}</div>
-                </div>)}
-        </div>
-
-
-    </div>
-)
-}
-*/
