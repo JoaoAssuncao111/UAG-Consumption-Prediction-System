@@ -36,7 +36,7 @@ class Service(private val transactionManager: TransactionManager) {
             when (readingType) {
                 "temperature" -> repository.getTemperature(newStartDate, newEndDate, id)
                 "humidity" -> repository.getHumidity(newStartDate, newEndDate, id)
-                "levels" -> repository.getLevels(newStartDate, newEndDate, id)
+                "levels" -> repository.getLevelsAndConsumptions(newStartDate, newEndDate, id)
                 else ->
                     mutableListOf()
             }
@@ -79,8 +79,9 @@ class Service(private val transactionManager: TransactionManager) {
             val newStartDate = LocalDate.parse(startDate, formatter)
             val newEndDate = LocalDate.parse(endDate, formatter)
             for (uag in uags) {
-                val temperatures = repository.getTemperature(newStartDate, newEndDate, uag.id)
-                val consumptions = repository.getLevels(newStartDate, newEndDate, uag.id)
+                val temperatures = repository.getRealestTemperatures(newStartDate, newEndDate, uag.id)
+                val consumptions = repository.getLevelsAndConsumptions(newStartDate, newEndDate, uag.id)
+
                 if (temperatures.isEmpty() || consumptions.isEmpty()) {
                     continue
                 }

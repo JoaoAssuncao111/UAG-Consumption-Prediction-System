@@ -18,7 +18,7 @@ class Repository(
             .list()
     }
 
-    override fun getLevels(startDate: LocalDate, endDate: LocalDate, location: Int): List<Level> {
+    override fun getLevelsAndConsumptions(startDate: LocalDate, endDate: LocalDate, location: Int): List<Level> {
         return handle.createQuery("select * from LEVEL WHERE date_hour" +
                 " BETWEEN :startDate AND :endDate AND location = :location")
             .bind("startDate", startDate)
@@ -56,6 +56,31 @@ class Repository(
             .list()
     }
 
+    override fun getRealTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): List<Temperature> {
+        return handle.createQuery("select * from temperature WHERE date_hour" +
+                " BETWEEN :startDate AND :endDate AND location = :location AND prediction_id == 0")
+            .bind("startDate", startDate)
+            .bind("endDate", endDate)
+            .bind("location",location)
+            .mapTo(Temperature::class.java)
+            .list()
+    }
+
+    override fun getRealestTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): MutableList<Temperature> {
+        return handle.createQuery("SELECT DISTINCT ON (date_hour) " +
+                "FROM temperature " +
+                "WHERE date_hour >= :startDate" +
+                "  AND date_hour <= :endDate + INTERVAL '1 day'" +
+                "and location = :location " +
+                "ORDER BY date_hour, prediction_id;")
+
+            .bind("startDate", startDate)
+            .bind("endDate", endDate)
+            .bind("location",location)
+            .mapTo(Temperature::class.java)
+            .list()
+    }
+
     override fun getHumidity(startDate: LocalDate, endDate: LocalDate, location: Int): List<Humidity> {
         return handle.createQuery("select * from humidity WHERE date_hour" +
                 " BETWEEN :startDate AND :endDate AND location = :location")
@@ -72,5 +97,17 @@ class Repository(
             .bind("training",training)
             .execute()
     }
+
+    override fun insertUag(observation: String, name: String, distance: Double, latitude: Double, longitude: Double): Int {
+        return handle.createUpdate( "insert into location values (:observation, :name,:distance,:latitude,:longitude,null)")
+            .bind("observation",observation)
+            .bind("name",name)
+            .bind("distance",distance)
+            .bind("latitude",latitude)
+            .bind("longitude",longitude)
+            .execute()
+
+    }
+
 
 }

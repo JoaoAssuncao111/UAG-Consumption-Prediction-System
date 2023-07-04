@@ -17,4 +17,11 @@ ALTER TABLE location RENAME COLUMN modulo_treino TO training;
 ALTER TABLE location
     ADD modulo_treino json;
 
-update location set modulo_treino = :training where id = :id
+update location set modulo_treino = :training where id = :id;
+
+SELECT DISTINCT ON (date_hour) *
+FROM temperature
+WHERE date_hour >= '2023-05-01'::date
+  AND date_hour <= '2023-07-07'::date + INTERVAL '1 day'
+and location = 21
+ORDER BY date_hour, prediction_id;

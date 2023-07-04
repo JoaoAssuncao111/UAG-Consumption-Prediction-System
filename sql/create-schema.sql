@@ -11,7 +11,8 @@ create table location
     name        varchar(50) unique not null,
     distance    float,
     latitude    double precision,
-    longitude   double precision
+    longitude   double precision,
+    training json
 
 );
 
