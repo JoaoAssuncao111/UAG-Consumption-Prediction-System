@@ -16,13 +16,17 @@ sealed class UagGetError {
     object UagsNotFound : UagGetError()
 }
 
+sealed class UagPostError{
+    object UagNameAlreadyExists: UagPostError()
+}
+
 @Component
 class Service(private val transactionManager: TransactionManager) {
 
     fun getUags(): List<Location> {
         return transactionManager.run {
             val repository = it.repository
-            repository.getUags()
+            repository.getLocations()
         }
 
     }
@@ -74,7 +78,7 @@ class Service(private val transactionManager: TransactionManager) {
 
         return transactionManager.run {
             val repository = it.repository
-            val uags = repository.getUags()
+            val uags = repository.getLocations()
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val newStartDate = LocalDate.parse(startDate, formatter)
             val newEndDate = LocalDate.parse(endDate, formatter)
@@ -94,7 +98,38 @@ class Service(private val transactionManager: TransactionManager) {
                 if(trainingOutputJson != "") repository.updateTraining(uag.id, trainingOutputJson)
 
             }
-            repository.getUags()
+            repository.getLocations()
+        }
+    }
+
+    fun insertUag(observation: String, name: String, distance: Double, latitude: Double, longitude: Double){
+        return transactionManager.run {
+            val repository = it.repository
+            if(repository.getLocationByName(name) == null) {
+                repository.insertUag(observation, name, distance, latitude, longitude)
+            }
+            else{
+                UagPostError.UagNameAlreadyExists
+            }
+        }
+
+    }
+
+    fun getLocationByName(name:String): Location?{
+        return transactionManager.run {
+            val repository = it.repository
+            val location = repository.getLocationByName(name)
+            location
+
+        }
+    }
+
+    fun deleteLocationByName(name:String): Boolean{
+        return transactionManager.run {
+            val repository = it.repository
+            val location = repository.getLocationByName(name)
+            if(location != null) repository.deleteLocationByName(name)
+            false
         }
     }
 }

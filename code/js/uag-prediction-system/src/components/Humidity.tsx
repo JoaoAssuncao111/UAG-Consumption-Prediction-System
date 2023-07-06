@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import "../styles.css"
 import { Link } from "react-router-dom"
 import { HumidityChart } from './HumidityChart';
+import { Header } from "./Header";
 
 export function Humidity() {
     const [location, setLocation] = useState(0);
@@ -37,7 +38,7 @@ export function Humidity() {
             if (await json) {
                 const sortedArray = json.sort((a, b) => a.dateHour.localeCompare(b.dateHour));
                 setData(sortedArray)
-                console.log(json)
+                if (json.length === 0) setError("Não existem leituras para os dados inseridos")
             }
         } catch (error) {
             console.log(error)
@@ -45,8 +46,8 @@ export function Humidity() {
     }
     return (
         <div>
+            <Header></Header>
             <div>
-                <Link to="/home">Home</Link>
                 <ReadingDataInput
                     location={location}
                     setLocation={setLocation}
@@ -61,7 +62,7 @@ export function Humidity() {
             </div>
             <div>
                 <button onClick={handleSubmit}>Fetch</button>
-                <h1>{data.length == 0 ? null : "Gráfico de Humidade"}</h1>
+                <h1 className="chart-title">{data.length == 0 ? null : "Gráfico de Humidade"}</h1>
                 {data.length > 0 ? (
                     <HumidityChart data={data} />
                 ) : (

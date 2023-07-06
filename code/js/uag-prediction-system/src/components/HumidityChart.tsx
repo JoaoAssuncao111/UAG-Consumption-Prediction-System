@@ -9,7 +9,7 @@ export function HumidityChart({ data }) {
         <AreaChart data={data}>
 
           <XAxis
-            label={{value: "Data"}}
+            label={{ value: "Data" }}
             dataKey={"dateHour"}
             tickLine={false}
             tickFormatter={string => {
@@ -25,10 +25,10 @@ export function HumidityChart({ data }) {
 
           <CartesianGrid opacity={0.1} vertical={false} />
 
-          <Tooltip labelFormatter={(value) =>{
+          <Tooltip labelFormatter={(value) => {
             const date = new Date(value)
             return format(date, "MMM d, yyyy, hh:mm")
-            }}/>
+          }} />
 
           <Legend />
 

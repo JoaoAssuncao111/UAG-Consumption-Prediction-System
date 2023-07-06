@@ -12,7 +12,7 @@ class Repository(
     private val handle: Handle
 ) : Repository {
 
-    override fun getUags(): List<Location> {
+    override fun getLocations(): List<Location> {
         return handle.createQuery("select * from location")
             .mapTo(Location::class.java)
             .list()
@@ -42,6 +42,21 @@ class Repository(
     override fun getLocationById(id: Int): Location? {
         return handle.createQuery("select * from location where id = :id")
             .bind("id",id)
+            .mapTo(Location::class.java)
+            .singleOrNull()
+    }
+
+    override fun deleteLocationByName(name: String): Boolean {
+        val result = handle.createUpdate("delete from location where name = :name")
+            .bind("name", name)
+            .execute()
+
+        return result > 0
+    }
+
+    override fun getLocationByName(name: String): Location? {
+        return handle.createQuery("select * from location where name = :name")
+            .bind("name",name)
             .mapTo(Location::class.java)
             .singleOrNull()
     }
@@ -99,7 +114,7 @@ class Repository(
     }
 
     override fun insertUag(observation: String, name: String, distance: Double, latitude: Double, longitude: Double): Int {
-        return handle.createUpdate( "insert into location values (:observation, :name,:distance,:latitude,:longitude,null)")
+        return handle.createUpdate( "insert into location (observation, name, distance, latitude, longitude,training) values (:observation, :name,:distance,:latitude,:longitude,null)")
             .bind("observation",observation)
             .bind("name",name)
             .bind("distance",distance)
@@ -107,6 +122,17 @@ class Repository(
             .bind("longitude",longitude)
             .execute()
 
+    }
+
+    override fun insertConsumption(dateHour: LocalDate,gasLevel: Double,location: Int,depositNumber: Int,counter: Int?,consumption: Double):Int{
+        return handle.createUpdate( "insert into level values (:dateHour,0,:gasLevel,:location,:depositNumber,:counter,:consumption)")
+            .bind("dateHour",dateHour)
+            .bind("gasLevel",gasLevel)
+            .bind("location",location)
+            .bind("depositNumber",depositNumber)
+            .bind("counter",counter)
+            .bind("consumption",consumption)
+            .execute()
     }
 
 

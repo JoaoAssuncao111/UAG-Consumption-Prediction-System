@@ -4,6 +4,7 @@ import { api } from '../api';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { LevelsChart } from './LevelsChart';
+import { Header } from "./Header";
 
 export function Levels() {
   const [location, setLocation] = useState(0);
@@ -11,11 +12,13 @@ export function Levels() {
   const [endDate, setEndDate] = useState(undefined);
   const [selectedDeposit, setSelectedDeposit] = useState('all');
   const [data, setData] = useState([]);
-  const [isFetchButtonDisabled,setisFetchButtonDisabled] = useState(false)
+  const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(false)
   const [error, setError] = useState("")
+
+
   useEffect(() => {
     setTimeout(() => {
-        setError("")
+      setError("")
     }, 3000);
   }, [error]);
 
@@ -35,7 +38,7 @@ export function Levels() {
       const json = await resp.json();
       if (json) {
         setData(json);
-        console.log(json);
+        if (json.length === 0) setError("Não existem leituras para os dados inseridos")
       }
     } catch (error) {
       console.log(error);
@@ -53,8 +56,8 @@ export function Levels() {
 
   return (
     <div>
+      <Header></Header>
       <div>
-        <Link to="/home">Home</Link>
         <ReadingDataInput
           location={location}
           setLocation={setLocation}
@@ -69,7 +72,7 @@ export function Levels() {
 
       <div>
         <button onClick={handleSubmit}>Fetch</button>
-        <h1>{data.length === 0 ? null : 'Gráfico de Nível/Consumo de Gás'}</h1>
+        <h1 className='chart-title'>{data.length === 0 ? null : 'Gráfico de Níveis e Consumos'}</h1>
         {data.length > 0 ? (
           <>
             <div>
@@ -104,6 +107,17 @@ export function Levels() {
                 onChange={() => setSelectedDeposit('2')}
               />
               <label htmlFor="deposit2">Deposit 2</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="deposit3"
+                name="deposit"
+                value="3"
+                checked={selectedDeposit === '3'}
+                onChange={() => setSelectedDeposit('3')}
+              />
+              <label htmlFor="deposit3">Deposit 3</label>
             </div>
             <LevelsChart data={filterDataByDeposit()} />
           </>

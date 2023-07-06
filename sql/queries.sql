@@ -25,3 +25,11 @@ WHERE date_hour >= '2023-05-01'::date
   AND date_hour <= '2023-07-07'::date + INTERVAL '1 day'
 and location = 21
 ORDER BY date_hour, prediction_id;
+
+
+SELECT *
+                FROM level
+                WHERE date_hour >= '2023-05-01'::date
+                  AND date_hour <= '2023-05-21'::date + INTERVAL '1 day'
+                and location = :location
+                ORDER BY date_hour, prediction_id;

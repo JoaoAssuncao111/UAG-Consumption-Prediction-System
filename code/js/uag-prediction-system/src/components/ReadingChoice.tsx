@@ -1,14 +1,18 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { useState,useEffect } from "react";
-import { api } from "../api";
+import { Header } from "./Header";
 
 export function ReadingChoice(){
     return(
         <div>
-            <Link to="/temperature">Temperature</Link>
-            <Link to="/humidity">Humidity</Link>
-            <Link to="/levels">Consumption</Link>
+            <Header></Header>
+        <div className="center-items">
+            <Link className="link"to="/temperature">Temperaturas</Link>
+            <Link className="link"to="/humidity">Humidade</Link>
+            <Link className="link"to="/levels">Consumos</Link>
+            <Link className="link"to="/uags">Todas as UAGS</Link>
+        </div>
         </div>
     )
 }

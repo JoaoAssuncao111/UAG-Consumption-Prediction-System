@@ -7,7 +7,6 @@ import Select from 'react-select';
 export function ReadingDataInput({ location, setLocation, startDate, setStartDate, endDate, setEndDate, isFetchButtonDisabled, setIsFetchButtonDisabled}) {
   const [error, setError] = useState('');
   const [locations, setLocations] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
   
 
@@ -65,25 +64,21 @@ export function ReadingDataInput({ location, setLocation, startDate, setStartDat
 
   return (
     <div>
-      <div>
-        <div>
-          <label>Localização</label>
-          <Select
+    
+          <Select className='select-bar'
             value={selectedOption}
             onChange={handleLocationChange}
             options={options}
             placeholder="Selecione uma localização"
             isSearchable
           />
-        </div>
-        <div>
-          <label>Data Inicial</label>
-          <DatePicker selected={startDate} onChange={(date) => handleDateChange(date, true)} dateFormat="yyyy-MM-dd" />
-          <label>Data Final</label>
-          <DatePicker selected={endDate} onChange={(date) => handleDateChange(date, false)} dateFormat="yyyy-MM-dd" />
-        </div>
-        {error && <p className="error">{error}</p>}
-      </div>
+      
+          <DatePicker className="date-picker" selected={startDate} onChange={(date) => handleDateChange(date, true)} dateFormat="yyyy-MM-dd" placeholderText="Data Inicial"/>
+        
+          <DatePicker  className="date-picker" selected={endDate} onChange={(date) => handleDateChange(date, false)} dateFormat="yyyy-MM-dd" placeholderText="Data Final"/>
+        
+        {error && <p className="error-message">{error}</p>}
+      
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Link } from "react-router-dom"
 import "../styles.css"
 import { TemperatureChart } from './TemperatureChart'
+import { Header } from "./Header";
 
 export function Temperature() {
     const [location, setLocation] = useState(0);
@@ -40,16 +41,16 @@ export function Temperature() {
                 const sortedArray = json.sort((a, b) => a.dateHour.localeCompare(b.dateHour));
                 setData(sortedArray)
                 console.log(json)
+                if(json.length === 0) setError("Não existem leituras para os dados inseridos")
             }
-            if( await data.length == 0) setError("Não existem leituras para os dados inseridos")
         } catch (error) {
             console.log(error)
         }
     }
     return (
         <div>
-            <div>
-                <Link to="/home">Home</Link>
+            <Header></Header>
+            <div >
                 <ReadingDataInput
                     location={location}
                     setLocation={setLocation}
@@ -65,10 +66,11 @@ export function Temperature() {
             <div>
                 <button disabled= {isFetchButtonDisabled} onClick={handleSubmit}>Fetch</button>
             </div>
+            <h1 className="chart-title">{data.length == 0 ? null : "Gráfico de Temperaturas"}</h1>
             {data.length > 0 ? (
                 <TemperatureChart data={data} />
             ) : null}
-            <div>{error}</div>
+            <div className='error-message'>{error}</div>
         </div>
     );
 }

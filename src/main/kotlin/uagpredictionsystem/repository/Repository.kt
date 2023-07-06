@@ -9,7 +9,8 @@ import java.time.LocalDate
 
 interface Repository {
     //Gets all UAG locations
-    fun getUags(): List<Location>
+    fun getLocations(): List<Location>
+
     //Gets
     fun getLevelsAndConsumptions(startDate: LocalDate, endDate: LocalDate, location: Int): List<Level>
 
@@ -28,4 +29,8 @@ interface Repository {
     fun getRealTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): List<Temperature>
 
     fun getRealestTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): MutableList<Temperature>
+
+    fun insertConsumption(dateHour: LocalDate,gasLevel: Double,location: Int,depositNumber: Int,counter: Int?,consumption: Double): Int
+    fun getLocationByName(name: String): Location?
+    fun deleteLocationByName(name: String): Boolean
 }

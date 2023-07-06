@@ -26,7 +26,7 @@ export function LevelsChart({ data }) {
               const date = new Date(value);
               return format(date, "MMM d, yyyy, hh:mm");
             }}
-            
+
           />
 
           <Legend />
