@@ -3,7 +3,7 @@ import { ReadingDataInput } from './ReadingDataInput';
 import { api } from '../api';
 import { format } from 'date-fns';
 import "../styles.css"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useHistory } from "react-router-dom"
 import { HumidityChart } from './HumidityChart';
 import { Header } from "./Header";
 
@@ -18,6 +18,7 @@ export function Uag() {
         longitude: 0
     })
     const [error, setError] = useState({})
+    const history = useHistory();
 
     useEffect(() => {
         fetchUag()
@@ -27,7 +28,10 @@ export function Uag() {
         try {
             const resp = await fetch(`${api}/uag/${name}`)
             const data = await resp.json()
-            if (data) setLocation(data)
+            if (await data){ 
+                setLocation(data)
+            }
+            else{history.push("/home")} 
         }
         catch (error) {
             setError("Erro na obtenção de dados da UAG")
@@ -35,15 +39,23 @@ export function Uag() {
 
     }
 
-    const handleDeleteClick = () =>{
-        fetch()
+    const handleDeleteClick = async () => {
+        const resp = await fetch(`${api}/uag/${name}`, {
+            method: 'DELETE',
+            headers: { 'content-type': 'application/json;charset=UTF-8' },
+        }
+        )
+
+        const data = await resp.json()
+
+        if(await data == true) {history.push("/insertuag")}
     }
     return (
         <div>
             <Header></Header>
-             <button className="delete-button" onClick={handleDeleteClick}>Apagar UAG</button>
+            <div className="align-right"><button className="delete-button" onClick={handleDeleteClick}>Apagar UAG</button></div>
 
-             <div className="center-items">
+            <div className="center-items">
                 <div className="location-card">
                     <h3 className="location-name">{location.name}</h3>
                     <p className="location-observation">Observação: {location.observation}</p>

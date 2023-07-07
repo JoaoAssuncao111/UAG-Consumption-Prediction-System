@@ -43,5 +43,11 @@ class Controller(private val service: Service) {
         return ResponseEntity.status(200).body(res)
     }
 
+    @DeleteMapping(Uris.UAG)
+    fun deleteUagByName(@PathVariable name: String): ResponseEntity<*>{
+        val res = service.deleteLocationByName(name)
+        return ResponseEntity.status(200).body(res)
+    }
+
 
 }

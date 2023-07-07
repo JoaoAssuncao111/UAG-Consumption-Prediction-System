@@ -128,8 +128,14 @@ class Service(private val transactionManager: TransactionManager) {
         return transactionManager.run {
             val repository = it.repository
             val location = repository.getLocationByName(name)
-            if(location != null) repository.deleteLocationByName(name)
-            false
+            if(location != null){
+                repository.deleteLocationByName(name)
+                true
+            }
+            else{
+                false
+            }
+
         }
     }
 }

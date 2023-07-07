@@ -9,7 +9,7 @@ export function UpdateChoice() {
         <div>
             <Header></Header>
             <div className="center-items">
-                <Link className="link" to="/insertuag">Inserir UAG</Link>
+                <Link className="link" to="/insertuag">Gerir UAGs</Link>
                 <Link className="link" to="/humidity">Treinar UAG</Link>
                 <Link className="link" to="/levels">Prever Consumos UAG</Link>
             </div>
