@@ -11,7 +11,7 @@ https://api.example.com
 ### Get UAGs
 - URL: `/uags`
 - Method: GET
-- Description: Retrieves the list of UAGs (Unmanned Aerial Vehicles).
+- Description: Retrieves the list of UAGs.
 - Response:
   - Status Code: 200 (OK)
   - Body: Array of UAG objects
@@ -21,7 +21,7 @@ https://api.example.com
 - Method: GET
 - Description: Retrieves readings based on the given reading type and input parameters.
 - Request Parameters:
-  - `readingType` (Path Variable): Type of reading (e.g., temperature, humidity).
+  - `readingType` (Path Variable): Type of reading (e.g., temperature, humidity,levels).
 - Query Parameters (ModelAttribute):
   - `startDate` (String): Start date of the reading period.
   - `endDate` (String): End date of the reading period.
@@ -56,7 +56,7 @@ https://api.example.com
 ### Insert UAG
 - URL: `/uags`
 - Method: POST
-- Description: Inserts a new UAG (Unmanned Aerial Vehicle) observation.
+- Description: Inserts a new UAG location
 - Request Body:
   - `observation` (String): Observation details.
   - `name` (String): UAG name.
