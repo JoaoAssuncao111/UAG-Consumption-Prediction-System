@@ -15,12 +15,12 @@ val observations = extractObservations(lines)
 
 fun main() {
     headerLocations.removeFirst(); headerLocations.removeLast()
-    insertLocationData(url, user, password, headerLocations, observations)
+    //insertLocationData(url, user, password, headerLocations, observations)
     val levelLocations = extractLevelLocations()
     val levelData = extractLevelData(levelLocations[0], levelLocations[2])
-    insertLevelData(levelData)
     val deliveryAndConsumptionData = extractDeliveryData(levelLocations[0],levelLocations[1])
-    val consumptionVal = deliveryAndConsumptionData.second.filter { entry -> entry.location == "Arcos de Valdevez" }
+    //insertLevelData(levelData)
+
     insertDeliveryData(deliveryAndConsumptionData.first)
     insertConsumption(deliveryAndConsumptionData.second)
 

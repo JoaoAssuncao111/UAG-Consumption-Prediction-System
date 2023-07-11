@@ -64,4 +64,9 @@ class Tests {
         val result = invokeTrainingAlgorithm(temperaturesJson, consumptionsJson)
         println("Result JSON:\n$result")
     }
+    @Test
+    fun toList(){
+        val list = mutableListOf(0.0,1.1,2.2,3.3)
+        println(list.toString())
+    }
 }

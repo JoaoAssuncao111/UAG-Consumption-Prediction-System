@@ -26,9 +26,10 @@ class Controller(private val service: Service) {
         val res = service.getTempAndCons(input.startDate, input.endDate, input.location)
         return ResponseEntity.status(200).body(res)
     }
-    @PutMapping(Uris.TRAINING)
-    fun getTraining(@ModelAttribute input: TrainingInputModel): ResponseEntity<*>{
-        val res = service.getTraining(input.startDate,input.endDate)
+
+    @GetMapping(Uris.UAG)
+    fun getUagByName(@PathVariable name: String): ResponseEntity<*>{
+        val res = service.getLocationByName(name)
         return ResponseEntity.status(200).body(res)
     }
 
@@ -37,15 +38,16 @@ class Controller(private val service: Service) {
         val res = service.insertUag(input.observation,input.name,input.distance,input.latitude,input.longitude)
         return ResponseEntity.status(200).body(res)
     }
-    @GetMapping(Uris.UAG)
-    fun getUagByName(@PathVariable name: String): ResponseEntity<*>{
-        val res = service.getLocationByName(name)
+
+    @PutMapping(Uris.TRAINING)
+    fun getTraining(@ModelAttribute input: TrainingInputModel): ResponseEntity<*>{
+        val res = service.getTraining(input.startDate,input.endDate)
         return ResponseEntity.status(200).body(res)
     }
 
-    @DeleteMapping(Uris.UAG)
-    fun deleteUagByName(@PathVariable name: String): ResponseEntity<*>{
-        val res = service.deleteLocationByName(name)
+    @GetMapping(Uris.DELIVERIES)
+    fun getDeliveries(@ModelAttribute input:ReadingInputModel): ResponseEntity<*>{
+        val res = service.getDeliveries(input.startDate,input.endDate,input.location)
         return ResponseEntity.status(200).body(res)
     }
 

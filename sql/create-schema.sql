@@ -69,6 +69,7 @@ create table delivery
     location_id integer not null references Location (id),
     time_of_day varchar(10) check ( time_of_day in ('M', 'T', 'M/T', '')),
     date_hour   date    not null,
+    is_planned boolean,
     CONSTRAINT unique_delivery_entry UNIQUE (company, load_amount, location_id, time_of_day, date_hour)
 );
 

@@ -45,138 +45,9 @@ def DayType(df):
     return lista
 
 
-# In[88]:
 
-
-pd.set_option('display.max_rows', None)  # Show all rows
-pd.set_option('display.max_columns', None)  # Show all columns
-# Aqui deve ser chamado o json de consumos no período temporal de treino, na localidade indicada
-df_origin = pd.read_excel("Teste_Fev_Abril_22_2.xlsx", sheet_name= "Bragança")
-#Esta chamada deve ser substituída pelo json de temperaturas no período temporal de treino, na localidade indicada
-df_temp= df_origin[["Data", "Tmin","Tmax"]]
-df = df_origin[["Data", "Consumo"]]
-#df['MA_3a5'] = MediaMovel(df, -5, -3)
-#df['MA_3a9'] = MediaMovel(df, -9, -3)
-#df['DayType'] = DayType(df)
-#df
-
-
-# In[89]:
-
-
-df['MA_3a5'] = MediaMovel(df, -5, -3)
-df['MA_3a9'] = MediaMovel(df, -9, -3)
-df['DayType'] = DayType(df)
-#df['Peso_mensal']=df_origin['Peso_mensal']
-df['Tmin']=df_temp['Tmin']
-df['Tmax']=df_temp['Tmax']
-df
-
-
-# In[90]:
-
-
-df=df.dropna()
-df
-
-
-# In[91]:
-
-
-corr = df.corr()
-corr.style.background_gradient(cmap='coolwarm')
-
-
-# In[92]:
-
-
-X=df.iloc[:50,3:]
-Y=df.iloc[:50,1]
-X.head
-Y.head
-
-
-# In[93]:
-
-
-X_test=df.iloc[50:,3:]
-Y_test=df.iloc[50:,1]
-X_test
-
-
-# In[94]:
-
-
-reg = LinearRegression().fit(X, Y)
-reg.score(X, Y)
-
-
-# In[95]:
-
-
-reg
-
-
-# In[96]:
-
-
-reg.coef_,reg.intercept_
-
-
-# In[97]:
-
-
-np.mean(abs(reg.predict(X)-Y))
-
-
-# In[98]:
-
-
-np.mean(abs(reg.predict(X_test)-Y_test))
-
-
-# In[99]:
-
-
-plt.plot(np.arange(len(Y_test)),Y_test)
-plt.plot(np.arange(len(Y_test)),reg.predict(X_test))
-
-
-# # Previsão
-
-# Para prever o consumo nos dias [d_0:d_n], temos que ter os dados da previsão de temperatura e os consumos reais nos dias [d_-9:d_-1]
-# Com os consumos passados calculamos as médias móveis e já com estas calculamos as previsões de consumo, que por sua vez alimentarão as médias móveis seguintes.
-# 
-# Média móvel -9,-3 ----> notação mm
-# Consumo --------> notação c
-# 
-# Usando as datas, temos mm0=avg(C-9:c-3)  c0=reg(mm0,temperaturas, dia, mês), acrescentando-se os valores mm0 e c0 na dataframe  
-
-# # Exemplo
-
-# In[100]:
-
-
-df_prev=df.iloc[-10:-3]
-df_prev
-
-
-# In[101]:
-
-
-cpr=df.iloc[-19:-10,:2] # últimos consumos reais (consumos passado recente)
-cpr
-
-
-# ## ➔ Dados de previsão a 7 dias
-
-# In[102]:
-
-
-size=9+7
-df=df[:size]
-df.reset_index(drop=True, inplace=True)
-df
+size=9+5
+df = pd.DataFrame({'Data': [],'Consumo': [],'MA_3a5': [],'MA_3a9': [],'DayType': [],'Tmin': [], 'Tmax': []})
 
 
 # In[111]:
@@ -188,7 +59,7 @@ for i in range(size):
     df.at[i, 'Consumo'] = None
     df.at[i, 'MA_3a5'] = None
     df.at[i, 'MA_3a9'] = None
-    #df.at[i, 'Data']= datas do conjunto de dias a usar no size
+    df.at[i, 'Data'] =  None
     df.at[i, 'DayType'] = DayType(df)[i]
 df
 
@@ -232,7 +103,7 @@ df
 # In[169]:
 
 
-previsão=df['Consumo'][9:]
+previsão=df['Data','Consumo'][9:]
 previsão
 
 

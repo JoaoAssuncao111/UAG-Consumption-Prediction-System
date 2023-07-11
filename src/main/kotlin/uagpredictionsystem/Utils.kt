@@ -35,8 +35,8 @@ fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): D
     return earthRadius * c
 }
 
-fun getAllLocationsFromDb(connection: Connection): HashMap<String,Location>{
-    val locations = hashMapOf<String,Location>()
+fun getAllLocationsFromDb(connection: Connection): HashMap<String, Location> {
+    val locations = hashMapOf<String, Location>()
     val statement = connection.createStatement()
     val resultSet =
         statement.executeQuery("SELECT * FROM LOCATION WHERE latitude IS NOT NULL AND longitude IS NOT NULL; ")
@@ -53,7 +53,7 @@ fun getAllLocationsFromDb(connection: Connection): HashMap<String,Location>{
     return locations
 }
 
-fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String{
+fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String {
     val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\ModuloTreino(1).py"
 
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
@@ -81,13 +81,25 @@ fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String{
     return lastLine ?: "{}"
 }
 
-fun invokePredictionAlgorithm(temperatures: String, consumptions: String,  coefs: List<Double>, intercept: Double): String{
+fun invokePredictionAlgorithm(
+    temperatures: String,
+    consumptions: String,
+    coefs: List<Double>,
+    intercept: Double
+): String {
     val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\PrevisaoResultados.py"
 
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
     val escapedConsumptions = consumptions.replace("\"", "\\\"")
 
-    val processBuilder = ProcessBuilder("python", pythonScript, escapedTemperatures, escapedConsumptions)
+    val processBuilder = ProcessBuilder(
+        "python",
+        pythonScript,
+        escapedTemperatures,
+        escapedConsumptions,
+        coefs.toString(),
+        intercept.toString()
+    )
 
     processBuilder.redirectErrorStream(true)
     val process = processBuilder.start()

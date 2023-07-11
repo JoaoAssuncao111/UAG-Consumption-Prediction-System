@@ -1,10 +1,7 @@
 package uagpredictionsystem.repository.jdbi
 
 import org.jdbi.v3.core.Handle
-import uagpredictionsystem.models.Humidity
-import uagpredictionsystem.models.Level
-import uagpredictionsystem.models.Location
-import uagpredictionsystem.models.Temperature
+import uagpredictionsystem.models.*
 import uagpredictionsystem.repository.Repository
 import java.time.LocalDate
 
@@ -61,13 +58,23 @@ class Repository(
             .singleOrNull()
     }
 
-    override fun getTemperature(startDate: LocalDate, endDate: LocalDate, location: Int): List<Temperature> {
+    override fun getTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): List<Temperature> {
         return handle.createQuery("select * from temperature WHERE date_hour" +
                 " BETWEEN :startDate AND :endDate AND location = :location")
             .bind("startDate", startDate)
             .bind("endDate", endDate)
             .bind("location",location)
             .mapTo(Temperature::class.java)
+            .list()
+    }
+
+    override fun getDeliveries(startDate: LocalDate, endDate: LocalDate, location: Int): List<Delivery> {
+        return handle.createQuery("select date_hour,load_amount,location_id from delivery WHERE date_hour" +
+                " BETWEEN :startDate AND :endDate AND location_id = :location")
+            .bind("startDate", startDate)
+            .bind("endDate", endDate)
+            .bind("location",location)
+            .mapTo(Delivery::class.java)
             .list()
     }
 
@@ -82,12 +89,12 @@ class Repository(
     }
 
     override fun getRealestTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): MutableList<Temperature> {
-        return handle.createQuery("SELECT DISTINCT ON (date_hour) " +
+        return handle.createQuery("SELECT DISTINCT ON (date_hour) * " +
                 "FROM temperature " +
-                "WHERE date_hour >= :startDate" +
-                "  AND date_hour <= :endDate + INTERVAL '1 day'" +
+                "WHERE date_hour >= :startDate " +
+                "AND date_hour <= :endDate + INTERVAL '1 day' " +
                 "and location = :location " +
-                "ORDER BY date_hour, prediction_id;")
+                "ORDER BY date_hour, prediction_id")
 
             .bind("startDate", startDate)
             .bind("endDate", endDate)

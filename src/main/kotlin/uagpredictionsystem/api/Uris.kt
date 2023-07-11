@@ -7,5 +7,6 @@ object Uris {
     const val TEMP_CONSM = "/tempcons"
     const val TRAINING = "/training"
     const val UAG = "/uag/{name}"
+    const val DELIVERIES = "/deliveries"
 
 }

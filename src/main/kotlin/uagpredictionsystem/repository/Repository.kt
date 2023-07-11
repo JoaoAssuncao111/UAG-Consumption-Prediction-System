@@ -1,9 +1,6 @@
 package uagpredictionsystem.repository
 
-import uagpredictionsystem.models.Humidity
-import uagpredictionsystem.models.Level
-import uagpredictionsystem.models.Location
-import uagpredictionsystem.models.Temperature
+import uagpredictionsystem.models.*
 import java.time.LocalDate
 
 
@@ -16,7 +13,7 @@ interface Repository {
 
     fun getLocationById(id: Int): Location?
 
-    fun getTemperature(startDate: LocalDate, endDate: LocalDate, location: Int): List<Temperature>
+    fun getTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): List<Temperature>
 
     fun getHumidity(startDate: LocalDate, endDate: LocalDate, location: Int): List<Humidity>
 
@@ -33,4 +30,6 @@ interface Repository {
     fun insertConsumption(dateHour: LocalDate,gasLevel: Double,location: Int,depositNumber: Int,counter: Int?,consumption: Double): Int
     fun getLocationByName(name: String): Location?
     fun deleteLocationByName(name: String): Boolean
+
+    fun getDeliveries(startDate: LocalDate, endDate: LocalDate, location: Int): List<Delivery>
 }

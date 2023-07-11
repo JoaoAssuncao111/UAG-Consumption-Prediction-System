@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.stereotype.Component
 import uagpredictionsystem.invokeTrainingAlgorithm
+import uagpredictionsystem.models.Delivery
 import uagpredictionsystem.models.FilteredConsumptions
 import uagpredictionsystem.models.Location
 import uagpredictionsystem.models.TemperatureAndConsumption
@@ -38,7 +39,7 @@ class Service(private val transactionManager: TransactionManager) {
             val newStartDate = LocalDate.parse(startDate, formatter)
             val newEndDate = LocalDate.parse(endDate, formatter)
             when (readingType) {
-                "temperature" -> repository.getTemperature(newStartDate, newEndDate, id)
+                "temperature" -> repository.getTemperatures(newStartDate, newEndDate, id)
                 "humidity" -> repository.getHumidity(newStartDate, newEndDate, id)
                 "levels" -> repository.getLevelsAndConsumptions(newStartDate, newEndDate, id)
                 else ->
@@ -54,7 +55,7 @@ class Service(private val transactionManager: TransactionManager) {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val newStartDate = LocalDate.parse(startDate, formatter)
             val newEndDate = LocalDate.parse(endDate, formatter)
-            val temperatures = repository.getTemperature(newStartDate, newEndDate, id)
+            val temperatures = repository.getRealestTemperatures(newStartDate, newEndDate, id)
             val consumptions = repository.get9PastLevels(newStartDate, newEndDate, id)
             val filteredConsumptions: List<FilteredConsumptions> = consumptions.map { level ->
                 FilteredConsumptions(
@@ -66,6 +67,17 @@ class Service(private val transactionManager: TransactionManager) {
                 )
             }
             TemperatureAndConsumption(temperatures, filteredConsumptions)
+        }
+    }
+
+    fun getDeliveries(startDate: String, endDate: String, id:Int): List<Delivery>{
+        return transactionManager.run {
+            val repository = it.repository
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val newStartDate = LocalDate.parse(startDate, formatter)
+            val newEndDate = LocalDate.parse(endDate, formatter)
+            val deliveries = repository.getDeliveries(newStartDate,newEndDate,id)
+            deliveries
         }
     }
 

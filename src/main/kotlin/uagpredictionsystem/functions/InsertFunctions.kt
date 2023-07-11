@@ -89,7 +89,7 @@ fun insertDeliveryData(deliveryData: List<DeliveryEntry>) {
     try {
         val deliveryConnection = DriverManager.getConnection(url, user, password)
         val insertDeliveryEntry =
-            "INSERT INTO delivery(company, load_amount,location_id, time_of_day, date_hour) VALUES (?, ?, ?, ?, ?)" +
+            "INSERT INTO delivery(company, load_amount,location_id, time_of_day, date_hour,is_planned) VALUES (?, ?, ?, ?, ?,?)" +
                     "ON CONFLICT (company, load_amount, location_id, time_of_day, date_hour) DO NOTHING;"
         val checkCompanySql = "SELECT * FROM company WHERE name = ?"
         val insertCompanySql = "INSERT INTO company (name,market_share,daily_fleet) VALUES (?,?,?)"
@@ -141,6 +141,7 @@ fun insertDeliveryData(deliveryData: List<DeliveryEntry>) {
             insertDeliveryDataStatement.setInt(3, locationId)
             insertDeliveryDataStatement.setString(4, entry.timeOfDay.trim())
             insertDeliveryDataStatement.setDate(5, date)
+            insertDeliveryDataStatement.setBoolean(6,false)
             insertDeliveryDataStatement.executeUpdate()
         }
 

@@ -1,62 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Tests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-06-27T21:22:06" hostname="DESKTOP-TU12RMC" time="1.06">
+<testsuite name="Tests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-07-11T13:43:23" hostname="DESKTOP-TU12RMC" time="0.014">
   <properties/>
-  <testcase name="invokeTest()" classname="Tests" time="1.06"/>
-  <system-out><![CDATA[Python script encountered an error. Exit code: 1
-Result JSON:
-E:\ISEL\Projeto\uag-prediction-system\ModuloTreino(1).py:55: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['MA_3a5'] = MediaMovel(df, -5, -2)
-E:\ISEL\Projeto\uag-prediction-system\ModuloTreino(1).py:56: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['MA_3a9'] = MediaMovel(df, -9, -2)
-E:\ISEL\Projeto\uag-prediction-system\ModuloTreino(1).py:26: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['date'] = pd.to_datetime(df['date'])
-E:\ISEL\Projeto\uag-prediction-system\ModuloTreino(1).py:57: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['DayType'] = DayType(df)
-E:\ISEL\Projeto\uag-prediction-system\ModuloTreino(1).py:58: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['minValue'] = df_temp['minValue']
-E:\ISEL\Projeto\uag-prediction-system\ModuloTreino(1).py:59: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['maxValue'] = df_temp['maxValue']
-Traceback (most recent call last):
-  File "E:\ISEL\Projeto\uag-prediction-system\ModuloTreino(1).py", line 65, in <module>
-    reg = LinearRegression().fit(X, Y)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\joaop\AppData\Roaming\Python\Python311\site-packages\sklearn\linear_model\_base.py", line 648, in fit
-    X, y = self._validate_data(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\joaop\AppData\Roaming\Python\Python311\site-packages\sklearn\base.py", line 584, in _validate_data
-    X, y = check_X_y(X, y, **check_params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\joaop\AppData\Roaming\Python\Python311\site-packages\sklearn\utils\validation.py", line 1106, in check_X_y
-    X = check_array(
-        ^^^^^^^^^^^^
-  File "C:\Users\joaop\AppData\Roaming\Python\Python311\site-packages\sklearn\utils\validation.py", line 931, in check_array
-    raise ValueError(
-ValueError: Found array with 0 sample(s) (shape=(0, 4)) while a minimum of 1 is required by LinearRegression.
-
+  <testcase name="toList()" classname="Tests" time="0.014"/>
+  <system-out><![CDATA[[0.0, 1.1, 2.2, 3.3]
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

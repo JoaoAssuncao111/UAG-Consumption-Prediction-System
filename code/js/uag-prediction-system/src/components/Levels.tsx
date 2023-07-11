@@ -11,7 +11,8 @@ export function Levels() {
   const [startDate, setStartDate] = useState(undefined);
   const [endDate, setEndDate] = useState(undefined);
   const [selectedDeposit, setSelectedDeposit] = useState('all');
-  const [data, setData] = useState([]);
+  const [levelData, setLevelData] = useState([]);
+  const [deliveryData, setDeliveryData] = useState([]);
   const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(false)
   const [error, setError] = useState("")
 
@@ -37,20 +38,34 @@ export function Levels() {
 
       const json = await resp.json();
       if (json) {
-        setData(json);
+        setLevelData(json);
         if (json.length === 0) setError("Não existem leituras para os dados inseridos")
       }
     } catch (error) {
       console.log(error);
     }
+
+    try {
+      const resp = await fetch(
+        `${api}/deliveries?startDate=${formattedStartDate}&endDate=${formattedEndDate}&location=${location}`
+      );
+
+      const json = await resp.json();
+      if (json) {
+        setDeliveryData(json);
+        console.log(json)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const filterDataByDeposit = () => {
     if (selectedDeposit === 'all') {
-      return data;
+      return levelData;
     } else {
       const depositNumber = parseInt(selectedDeposit); // Convert selectedDeposit to integer
-      return data.filter((item) => item.depositNumber === depositNumber);
+      return levelData.filter((item) => item.depositNumber === depositNumber);
     }
   };
 
@@ -72,8 +87,8 @@ export function Levels() {
 
       <div>
         <button onClick={handleSubmit}>Fetch</button>
-        <h1 className='chart-title'>{data.length === 0 ? null : 'Gráfico de Níveis e Consumos'}</h1>
-        {data.length > 0 ? (
+        <h1 className='chart-title'>{levelData.length === 0 ? null : 'Gráfico de Níveis e Entregas'}</h1>
+        {levelData.length > 0 ? (
           <>
             <div>
               <input
@@ -119,7 +134,7 @@ export function Levels() {
               />
               <label htmlFor="deposit3">Deposit 3</label>
             </div>
-            <LevelsChart data={filterDataByDeposit()} />
+            <LevelsChart levels={filterDataByDeposit()} deliveries = {deliveryData}/>
           </>
         ) : null}
       </div>
