@@ -26,7 +26,7 @@ class Controller(private val service: Service) {
         val res = service.getTempAndCons(input.startDate, input.endDate, input.location)
         return ResponseEntity.status(200).body(res)
     }
-    @GetMapping(Uris.TRAINING)
+    @PutMapping(Uris.TRAINING)
     fun getTraining(@ModelAttribute input: TrainingInputModel): ResponseEntity<*>{
         val res = service.getTraining(input.startDate,input.endDate)
         return ResponseEntity.status(200).body(res)

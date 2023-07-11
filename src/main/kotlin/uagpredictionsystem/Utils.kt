@@ -80,3 +80,32 @@ fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String{
 
     return lastLine ?: "{}"
 }
+
+fun invokePredictionAlgorithm(temperatures: String, consumptions: String,  coefs: List<Double>, intercept: Double): String{
+    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\PrevisaoResultados.py"
+
+    val escapedTemperatures = temperatures.replace("\"", "\\\"")
+    val escapedConsumptions = consumptions.replace("\"", "\\\"")
+
+    val processBuilder = ProcessBuilder("python", pythonScript, escapedTemperatures, escapedConsumptions)
+
+    processBuilder.redirectErrorStream(true)
+    val process = processBuilder.start()
+
+    val reader = BufferedReader(InputStreamReader(process.inputStream))
+    var line: String?
+    var lastLine: String? = null
+    while (reader.readLine().also { line = it } != null) {
+        lastLine = line
+    }
+
+    val exitCode = process.waitFor()
+    if (exitCode == 0) {
+        println("Python script executed successfully.")
+    } else {
+        println("Python script encountered an error. Exit code: $exitCode")
+    }
+
+    return lastLine ?: "{}"
+}
+
