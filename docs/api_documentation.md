@@ -42,7 +42,7 @@ https://api.example.com
   - Status Code: 200 (OK)
   - Body: Array of temperature and consumption objects
 
-### Get Training
+### Execute Training
 - URL: `/training`
 - Method: PUT
 - Description: Retrieves the training data based on the input parameters.
@@ -77,15 +77,6 @@ https://api.example.com
   - Status Code: 200 (OK)
   - Body: UAG object
 
-### Delete UAG by Name
-- URL: `/uags/{name}`
-- Method: DELETE
-- Description: Deletes a UAG based on the given name.
-- Request Parameters:
-  - `name` (Path Variable): UAG name.
-- Response:
-  - Status Code: 200 (OK)
-  - Body: Result object
 
 ---
 
