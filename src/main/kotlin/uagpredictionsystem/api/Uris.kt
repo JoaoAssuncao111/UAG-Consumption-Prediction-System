@@ -8,5 +8,6 @@ object Uris {
     const val TRAINING = "/training"
     const val UAG = "/uag/{name}"
     const val DELIVERIES = "/deliveries"
+    const val PREDICT = "/predict"
 
 }

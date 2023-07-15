@@ -1,7 +1,8 @@
 create table prediction
 (
     id              int not null primary key,
-    prediction_type varchar(50)
+    prediction_type varchar(50),
+    prediction_agent varchar(50)
 );
 
 create table location
@@ -76,11 +77,18 @@ create table delivery
 insert into prediction
 values ('99', 'dummy'),
        ('0', 'Real'),
-       ('1', '1 Day Prediction'),
-       ('2', '2 Day Prediction'),
-       ('3', '3 Day Prediction'),
-       ('4', '4 Day Prediction'),
-       ('5', '5 Day Prediction'),
-       ('6', '6 Day Prediction'),
-       ('7', '7 Day Prediction')
+       ('1', '1 Day IPMA Prediction'),
+       ('2', '2 Day IPMA Prediction'),
+       ('3', '3 Day IPMA Prediction'),
+       ('4', '4 Day IPMA Prediction'),
+       ('5', '5 Day IPMA Prediction'),
+       ('6', '6 Day IPMA Prediction'),
+       ('7', '7 Day IPMA Prediction'),
+       ('11','1 Day Algorithm Prediction'),
+       ('12','2 Day Algorithm Prediction'),
+       ('13','3 Day Algorithm Prediction'),
+       ('14','4 Day Algorithm Prediction'),
+       ('15','5 Day Algorithm Prediction'),
+       ('16','6 Day Algorithm Prediction'),
+       ('17','7 Day Algorithm Prediction')
 

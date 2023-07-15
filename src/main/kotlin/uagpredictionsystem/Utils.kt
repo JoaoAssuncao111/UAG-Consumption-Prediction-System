@@ -92,6 +92,7 @@ fun invokePredictionAlgorithm(
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
     val escapedConsumptions = consumptions.replace("\"", "\\\"")
 
+
     val processBuilder = ProcessBuilder(
         "python",
         pythonScript,
@@ -108,6 +109,7 @@ fun invokePredictionAlgorithm(
     var line: String?
     var lastLine: String? = null
     while (reader.readLine().also { line = it } != null) {
+        println(line)
         lastLine = line
     }
 

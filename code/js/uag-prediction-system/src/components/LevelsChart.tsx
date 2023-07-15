@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { ReferenceLine, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { format } from "date-fns";
 
 export function LevelsChart({ levels, deliveries }) {
@@ -54,6 +54,8 @@ export function LevelsChart({ levels, deliveries }) {
             stroke="#7ED957"
             fill="#7ED957"
           />
+
+        <ReferenceLine y={35} stroke="#FF0000" strokeWidth={4} />
         </BarChart>
       </ResponsiveContainer>
     </div>

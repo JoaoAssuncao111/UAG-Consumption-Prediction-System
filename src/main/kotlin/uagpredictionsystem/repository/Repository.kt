@@ -27,9 +27,23 @@ interface Repository {
 
     fun getRealestTemperatures(startDate: LocalDate, endDate: LocalDate, location: Int): MutableList<Temperature>
 
-    fun insertConsumption(dateHour: LocalDate,gasLevel: Double,location: Int,depositNumber: Int,counter: Int?,consumption: Double): Int
+
     fun getLocationByName(name: String): Location?
     fun deleteLocationByName(name: String): Boolean
 
     fun getDeliveries(startDate: LocalDate, endDate: LocalDate, location: Int): List<Delivery>
+    fun getTraining(id: Int): String?
+    fun insertLevel(
+        dateHour: LocalDate,
+        predictionId: Int,
+        gasLevel: Double?,
+        location: Int,
+        depositNumber: Int,
+        counter: Int?,
+        consumption: Double
+    ): Int
+
+    fun getConsumptionByDate(dateHour: LocalDate, location: Int,depositNumber: Int): Level
+    fun getNumberOfDeposits(location: Int): Int
+    fun checkIfConsumptionEntryExists(dateHour: LocalDate, location: Int, depositNumber: Int): Boolean
 }
