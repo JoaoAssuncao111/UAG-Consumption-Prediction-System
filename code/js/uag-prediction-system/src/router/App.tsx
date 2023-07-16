@@ -9,6 +9,8 @@ import { Humidity } from '../components/Humidity';
 import { UpdateChoice } from '../components/UpdateChoice';
 import { InsertUag } from '../components/InsertUag';
 import { Uag } from '../components/Uag';
+import { Training } from '../components/Training';
+import { Prediction } from '../components/Prediction';
 
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
                 <Route path="/insertions"component={UpdateChoice}></Route>
                 <Route path="/levels" component={Levels}></Route>
                 <Route path="/temperature" component={Temperature} />
+                <Route path="/training" component={Training} />
+                <Route path="/predict" component={Prediction} />
                 <Route path="/insertuag" component={InsertUag} />
                 <Route path="/uags" component={Uags} />
                 <Route path="/uag/:name" component={Uag}></Route>

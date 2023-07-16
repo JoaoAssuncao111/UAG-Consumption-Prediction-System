@@ -26,6 +26,8 @@ values ('11','1 Day Algorithm Prediction'),
 ALTER TABLE location
     ADD modulo_treino json;
 
+UPDATE location SET training = NULL;
+
 ALTER TABLE delivery
     ADD is_planned boolean;
 
