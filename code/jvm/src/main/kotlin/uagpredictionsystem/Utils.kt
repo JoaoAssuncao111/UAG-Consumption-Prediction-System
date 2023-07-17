@@ -54,7 +54,7 @@ fun getAllLocationsFromDb(connection: Connection): HashMap<String, Location> {
 }
 
 fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String {
-    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\src\\main\\resources\\ModuloTreino(1).py"
+    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\ModuloTreino.py"
 
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
     val escapedConsumptions = consumptions.replace("\"", "\\\"")
@@ -87,7 +87,7 @@ fun invokePredictionAlgorithm(
     coefs: List<Double>,
     intercept: Double
 ): String {
-    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\PrevisaoResultados.py"
+    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\PrevisaoResultados.py"
 
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
     val escapedConsumptions = consumptions.replace("\"", "\\\"")
