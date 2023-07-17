@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("org.springframework.boot") version "2.7.4"
@@ -37,11 +38,20 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
 application {
     mainClass.set("Application.kt")
+}
+tasks {
+    withType<BootJar> {
+        archiveFileName.set("uag-consumption-prediction-system.jar") // Replace "custom-jar-name.jar" with the desired JAR name
+    }
+}
+sourceSets {
+    main {
+        java.srcDirs("code/jvm/src/main/kotlin") // Check this path
+    }
 }
