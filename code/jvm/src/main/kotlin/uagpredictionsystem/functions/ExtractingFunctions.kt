@@ -446,7 +446,7 @@ fun extractHumidity(stations: HashMap<Int, IpmaLocation>): HashMap<IpmaLocation,
             for (numberKey in timestampObject.keys()) {
                 val value = timestampObject.get(numberKey)
                 if (value is JSONObject) {
-                    val numberObject = value as JSONObject
+                    val numberObject = value
                     val humidity = numberObject.getDouble("humidade")
                     val station = stations[numberKey.toInt()]
                     val humidityEntry = HumidityEntry(humidity, timestampKey)

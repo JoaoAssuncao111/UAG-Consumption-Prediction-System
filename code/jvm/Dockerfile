@@ -1,26 +1,40 @@
-# Use the official OpenJDK image as the base image
-FROM openjdk:17-jdk
+# Stage 1: Build the Spring backend
+FROM openjdk:17 AS backend
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the JVM folder containing the Spring backend code
-COPY ./ /app
+# Copy the build output (JAR file) from the Gradle build
+COPY build/libs/uag-consumption-prediction-system.jar /app/uag-consumption-prediction-system.jar
 
-# Copy the Python scripts and data.txt file into the container
-COPY ./python_scripts/ /app/python_scripts
-COPY ./excel_file/galp_data.txt /app/galp_data.txt
+# Stage 2: Install Python and its dependencies
+FROM python:3.8 AS python
 
-# Build the Spring backend (you may need to adjust the build command based on your build tool)
-RUN ./gradlew build
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the python scripts and requirements.txt
+COPY python_scripts /app/python_scripts
+COPY galp_file/galp_data.txt /app/galp_data.txt
+COPY requirements.txt /app/requirements.txt
+
+# Install Python dependencies
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Stage 3: Final image for running the backend
+FROM openjdk:17
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the built JAR file from the first stage
+COPY --from=backend /app/uag-consumption-prediction-system.jar /app/uag-consumption-prediction-system.jar
+
+# Copy the installed Python dependencies from the second stage
+COPY --from=python /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
 
 # Expose the port on which the Spring application runs (replace with your actual port)
 EXPOSE 8080
 
-# Set environment variables for database connection (replace with your actual database credentials)
-ENV DB_URL=jdbc:postgresql://database:5432/postgres
-ENV DB_USER=postgres
-ENV DB_PASSWORD=joaopedro123
-
-# Start the Spring Boot application
-CMD ["java", "-jar", "/app/build/libs/uag-prediction-system.jar"]
+# Set the entrypoint command to run the Spring Boot application
+CMD ["java", "-jar", "uag-consumption-prediction-system.jar"]

@@ -30,7 +30,7 @@ dependencies {
     implementation("org.jdbi:jdbi3-core:3.37.1")
     implementation("org.springframework.security:spring-security-core:6.0.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation ("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.8.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -41,17 +41,31 @@ tasks.test {
     useJUnitPlatform()
 }
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
 }
 
+tasks.withType<JavaCompile> {
+    sourceCompatibility = JavaVersion.VERSION_17.toString()
+    targetCompatibility = JavaVersion.VERSION_17.toString()
+}
+
 application {
-    mainClass.set("Application.kt")
+    mainClass.set("Application")
 }
 tasks {
     withType<BootJar> {
         archiveFileName.set("uag-consumption-prediction-system.jar")
+    }
+
+
+    sourceSets {
+        main {
+            kotlin {
+                srcDir("src/main/kotlin")
+            }
+            resources {
+                srcDir("src/main/resources")
+            }
+        }
     }
 }
