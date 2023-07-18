@@ -57,4 +57,10 @@ class Controller(private val service: Service) {
         return ResponseEntity.status(200).body(res)
     }
 
+    @PostMapping(Uris.IPMA)
+    fun fetchIpmaData(): ResponseEntity<*>{
+        val res = service.fetchIpmaData()
+        return ResponseEntity.status(200).body(res)
+    }
+
 }

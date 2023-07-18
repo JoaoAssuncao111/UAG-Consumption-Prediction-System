@@ -11,6 +11,7 @@ export function UpdateChoice() {
             <div className="center-items">
                 <Link className="link" to="/insertuag">Gerir UAGs</Link>
                 <Link className="link" to="/predict">Prever Consumos</Link>
+                <Link className="link" to="/ipma"> Buscar Dados Diários IPMA </Link>
             </div>
         </div>
     )

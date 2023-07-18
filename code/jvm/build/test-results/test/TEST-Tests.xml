@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Tests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-07-17T17:42:57" hostname="DESKTOP-TU12RMC" time="3.018">
+<testsuite name="Tests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-07-18T19:00:53" hostname="DESKTOP-TU12RMC" time="3.544">
   <properties/>
-  <testcase name="invokePredictions()" classname="Tests" time="1.292"/>
-  <testcase name="testHaversineFormula()" classname="Tests" time="0.783"/>
-  <testcase name="invokeTest()" classname="Tests" time="0.941"/>
+  <testcase name="invokePredictions()" classname="Tests" time="1.773"/>
+  <testcase name="testHaversineFormula()" classname="Tests" time="0.758"/>
+  <testcase name="invokeTest()" classname="Tests" time="1.012"/>
   <system-out><![CDATA[[-9.0, -9.0, -9.0, -9.0, -9.0, -9.0, -9.0, -9.0]
 [20.0, 20.0, 20.0, 20.0, 20.0]
 [13.0, 13.0, 13.0, 13.0, 13.0]

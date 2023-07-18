@@ -2,14 +2,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("org.springframework.boot") version "2.7.4"
+    id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.0.14.RELEASE"
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.spring") version "1.6.21"
     application
 }
-
-
 
 group = "org.example"
 version = "0.1"
@@ -44,28 +42,17 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
 }
 
+application {
+    mainClass.set("uagpredictionsystem.MyAppKt")
+}
 tasks.withType<JavaCompile> {
     sourceCompatibility = JavaVersion.VERSION_17.toString()
     targetCompatibility = JavaVersion.VERSION_17.toString()
 }
 
-application {
-    mainClass.set("Application")
-}
 tasks {
     withType<BootJar> {
         archiveFileName.set("uag-consumption-prediction-system.jar")
     }
 
-
-    sourceSets {
-        main {
-            kotlin {
-                srcDir("src/main/kotlin")
-            }
-            resources {
-                srcDir("src/main/resources")
-            }
-        }
-    }
 }

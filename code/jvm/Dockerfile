@@ -1,11 +1,11 @@
 # Stage 1: Build the Spring backend
-FROM openjdk:17 AS backend
+FROM openjdk:17.0.2 AS backend
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the build output (JAR file) from the Gradle build
-COPY build/libs/uag-consumption-prediction-system.jar /app/uag-consumption-prediction-system.jar
+COPY ./build/libs/uag-consumption-prediction-system.jar /app/uag-consumption-prediction-system.jar
 
 # Stage 2: Install Python and its dependencies
 FROM python:3.8 AS python

@@ -11,6 +11,7 @@ import { InsertUag } from '../components/InsertUag';
 import { Uag } from '../components/Uag';
 import { Training } from '../components/Training';
 import { Prediction } from '../components/Prediction';
+import { IPMA } from '../components/Ipma';
 
 
 const App = () => {
@@ -27,8 +28,10 @@ const App = () => {
                 <Route path="/predict" component={Prediction} />
                 <Route path="/insertuag" component={InsertUag} />
                 <Route path="/uags" component={Uags} />
+                <Route path="/ipma" component={IPMA}></Route>
                 <Route path="/uag/:name" component={Uag}></Route>
                 <Route path="/" component={Home} />
+                
             </Switch>
         </Router>
     );

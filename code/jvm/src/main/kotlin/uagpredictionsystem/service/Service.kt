@@ -6,12 +6,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.stereotype.Component
+import uagpredictionsystem.functions.*
 import uagpredictionsystem.invokePredictionAlgorithm
 import uagpredictionsystem.invokeTrainingAlgorithm
 import uagpredictionsystem.models.*
 import uagpredictionsystem.repository.TransactionManager
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 
 sealed class UagGetError {
     object UagsNotFound : UagGetError()
@@ -46,6 +48,24 @@ class Service(private val transactionManager: TransactionManager) {
                     mutableListOf()
             }
 
+        }
+    }
+
+    fun fetchIpmaData(){
+        return transactionManager.run {
+            val minTemperatures =
+                extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-min/", "mtnmn")
+            val maxTemperatures =
+                extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-max/", "mtxmx")
+            val ipmaLocations = extractIpmaLocations()
+            val ipmaStations = extractIpmaStations()
+
+            val temperaturePredictions = extractTemperaturePredictions(ipmaLocations)
+            val humidityEntries = extractHumidity(ipmaStations)
+
+            insertTemperatures(minTemperatures, maxTemperatures)
+            insertTemperaturePredictionData(temperaturePredictions)
+            insertHumidityData(humidityEntries)
         }
     }
 

@@ -5,30 +5,38 @@ services:
     build:
       context: ./code/jvm
       dockerfile: Dockerfile
+    image: backend-image
     ports:
-      - "8080:8080"  # Map the container's port 8080 to the host's port 8080
-    environment:
-      DB_URL: "jdbc:postgresql://database:5432/postgres"  # Use the service name "database" for the database connection
-      DB_USER: "postgres"
-      DB_PASSWORD: "joaopedro123"
+      - "8080:8080"
     depends_on:
-      - database  # Ensure that the database container is started first
+      - database
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=joaopedro123
 
   frontend:
     build:
       context: ./code/js/uag-prediction-system
       dockerfile: Dockerfile
+    image: frontend-image
     ports:
-      - "8081:8081"  # Map the container's port 80 to the host's port 8081
+      - "8081:8081"
+    depends_on:
+      - backend
 
   database:
     image: postgres:latest
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: joaopedro123
+    container_name: uag-prediction-system-database-1
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=joaopedro123
 
 volumes:
-  postgres_data:  # Persistent volume for the PostgreSQL database data
+  pg_data:
