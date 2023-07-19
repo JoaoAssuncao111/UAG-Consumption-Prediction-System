@@ -25,6 +25,16 @@ This document provides an overview of the endpoints available in the UAG Predict
 - Response:
   - Status Code: 200 (OK)
   - Body: Array of reading objects
+ Example Temperature Response Body:
+
+{
+    "id": 1,
+    "name": "A green door",
+    "price": 12.50,
+    "tags": [ "home", "green" ]
+}
+
+
 
 ### Get Temperature and Consumption
 - URL: `/tempcons`
@@ -37,7 +47,17 @@ This document provides an overview of the endpoints available in the UAG Predict
 - Response:
   - Status Code: 200 (OK)
   - Body: Array of temperature and consumption objects
-
+  - 
+### Get UAG by name
+- URL: `/uag/{name}`
+- Method: GET
+- Description: Retrieves UAG details.
+- Request Parameters:
+  - `readingType` (Path Variable): Type of reading (e.g., temperature, humidity, levels).
+- Response:
+  - Status Code: 200 (OK)
+  - Body: Array of UAG Objects
+    
 ### Insert UAG
 - URL: `/uags`
 - Method: POST
@@ -50,7 +70,7 @@ This document provides an overview of the endpoints available in the UAG Predict
   - `longitude` (String): Longitude coordinate.
 - Response:
   - Status Code: 200 (OK)
-  - Body: Result object
+
 
 ### Execute Training
 - URL: `/training`
