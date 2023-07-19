@@ -27,18 +27,18 @@ This document provides an overview of the endpoints available in the UAG Predict
   - Body: Array of reading objects
  Example Temperature Response Body:
 ```json
-{
-[
+[{
+
     "id": 1,
     "dateHour": "2023-07-28",
     "location": 1,
     "predictionId": 0,
     "minValue": 10.3
     "maxValue": 23.1
-,
+},
   ...
 ]
-}
+
 ```
 
 
