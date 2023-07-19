@@ -2,10 +2,6 @@
 
 This document provides an overview of the endpoints available in the UAG Prediction System API.
 
-## Base URL
-https://api.example.com
-
-
 ## Endpoints
 
 ### Get UAGs
