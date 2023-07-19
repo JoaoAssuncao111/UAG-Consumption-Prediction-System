@@ -27,7 +27,7 @@ This document provides an overview of the endpoints available in the UAG Predict
   - Body: Array of reading objects
 
 ### Get Temperature and Consumption
-- URL: `/temp_and_cons`
+- URL: `/tempcons`
 - Method: GET
 - Description: Retrieves temperature and consumption readings based on the input parameters.
 - Query Parameters (ModelAttribute):
