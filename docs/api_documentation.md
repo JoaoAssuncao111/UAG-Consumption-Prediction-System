@@ -25,10 +25,9 @@ This document provides an overview of the endpoints available in the UAG Predict
 - Response:
   - Status Code: 200 (OK)
   - Body: Array of reading objects
- Example Temperature Response Body:
+-Example Temperature Response Body:
 ```json
 [{
-
     "id": 1,
     "dateHour": "2023-07-28",
     "location": 1,
@@ -88,7 +87,6 @@ This document provides an overview of the endpoints available in the UAG Predict
   - `endDate` (String): End date of the training period.
 - Response:
   - Status Code: 200 (OK)
-  - Body: Training data object
 
 ### Get Deliveries
 - URL: `/deliveries`
@@ -111,7 +109,6 @@ This document provides an overview of the endpoints available in the UAG Predict
   - `endDate` (String): End date for the prediction period.
 - Response:
   - Status Code: 200 (OK)
-  - Body: Array of predicted consumption objects
 
 ### Fetch IPMA Data
 - URL: `/ipma`
