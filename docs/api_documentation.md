@@ -26,13 +26,20 @@ This document provides an overview of the endpoints available in the UAG Predict
   - Status Code: 200 (OK)
   - Body: Array of reading objects
  Example Temperature Response Body:
-
+```json
 {
+[
     "id": 1,
-    "name": "A green door",
-    "price": 12.50,
-    "tags": [ "home", "green" ]
+    "dateHour": "2023-07-28",
+    "location": 1,
+    "predictionId": 0,
+    "minValue": 10.3
+    "maxValue": 23.1
+,
+  ...
+]
 }
+```
 
 
 
