@@ -10,7 +10,7 @@ export function ReadingChoice(){
         <div className="center-items">
             <Link className="link"to="/temperature">Temperaturas</Link>
             <Link className="link"to="/humidity">Humidade</Link>
-            <Link className="link"to="/levels">Consumos</Link>
+            <Link className="link"to="/levels">Niveis e Entregas</Link>
             <Link className="link"to="/uags">Todas as UAGS</Link>
         </div>
         </div>

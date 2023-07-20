@@ -1,6 +1,7 @@
 package uagpredictionsystem.repository.jdbi
 
 import org.jdbi.v3.core.Handle
+import org.jdbi.v3.core.kotlin.mapTo
 import uagpredictionsystem.models.*
 import uagpredictionsystem.repository.Repository
 import java.time.LocalDate
@@ -25,6 +26,13 @@ class Repository(
             .bind("location", location)
             .mapTo(Level::class.java)
             .list()
+    }
+
+    override fun getPrediction(id: Int): String?{
+        return handle.createQuery("SELECT prediction_type from prediction where id = :id")
+            .bind("id",id)
+            .mapTo<String>()
+            .singleOrNull()
     }
 
     //Only relative to one deposit since all consumption are equal per deposit

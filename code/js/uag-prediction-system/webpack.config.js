@@ -6,9 +6,6 @@ module.exports = {
     devServer: {
 		hot: false,
         historyApiFallback: true,
-		proxy: {
-			'/api': 'http://localhost:8080',
-		},
         allowedHosts:"all"
     },
     module: {

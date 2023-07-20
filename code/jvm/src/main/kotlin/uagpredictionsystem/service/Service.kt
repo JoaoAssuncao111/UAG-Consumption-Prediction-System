@@ -41,9 +41,47 @@ class Service(private val transactionManager: TransactionManager) {
             val newStartDate = LocalDate.parse(startDate, formatter)
             val newEndDate = LocalDate.parse(endDate, formatter)
             when (readingType) {
-                "temperature" -> repository.getTemperatures(newStartDate, newEndDate, id)
                 "humidity" -> repository.getHumidity(newStartDate, newEndDate, id)
-                "levels" -> repository.getLevelsAndConsumptions(newStartDate, newEndDate, id)
+                "temperature" -> {
+                    val list = repository.getTemperatures(newStartDate, newEndDate, id)
+                    val result = mutableListOf<TemperatureWithPredictionType>()
+                    for (temperature in list) {
+                        result.add(
+                            TemperatureWithPredictionType(
+                                temperature.id,
+                                temperature.dateHour,
+                                temperature.location,
+                                temperature.predictionId,
+                                getPrediction(temperature.predictionId),
+                                temperature.minValue,
+                                temperature.maxValue
+                            )
+                        )
+                    }
+                    result
+                }
+
+                "levels" -> {
+                    val list = repository.getLevelsAndConsumptions(newStartDate, newEndDate, id)
+                    val result = mutableListOf<LevelWithPredictionType>()
+                    for (level in list) {
+                        result.add(
+                            LevelWithPredictionType(
+                                level.id,
+                                level.date,
+                                level.predictionId,
+                                getPrediction(level.predictionId),
+                                level.gasLevel,
+                                level.location,
+                                level.depositNumber,
+                                level.counter,
+                                level.consumption
+                            )
+                        )
+                    }
+                    result
+                }
+
                 else ->
                     mutableListOf()
             }
@@ -51,7 +89,14 @@ class Service(private val transactionManager: TransactionManager) {
         }
     }
 
-    fun fetchIpmaData(){
+    fun getPrediction(id: Int): String {
+        return transactionManager.run {
+            val repository = it.repository
+            repository.getPrediction(id) ?: ""
+        }
+    }
+
+    fun fetchIpmaData() {
         return transactionManager.run {
             val minTemperatures =
                 extractTemperature("https://api.ipma.pt/open-data/observation/climate/temperature-min/", "mtnmn")
@@ -130,21 +175,22 @@ class Service(private val transactionManager: TransactionManager) {
                 val temperaturesJson = objectMapper.writeValueAsString(temperatureAndConsumptions.temperatures)
                 val consumptionsJson = objectMapper.writeValueAsString(temperatureAndConsumptions.consumptions)
 
-                val consumptionPredictionsString = invokePredictionAlgorithm(temperaturesJson,consumptionsJson, coefficients, intercept)
+                val consumptionPredictionsString =
+                    invokePredictionAlgorithm(temperaturesJson, consumptionsJson, coefficients, intercept)
                 val consumptionPredictionJSON = JSONArray(consumptionPredictionsString)
 
 
-                for(i in 0 until consumptionPredictionJSON.length()){
+                for (i in 0 until consumptionPredictionJSON.length()) {
                     val jsonObject = consumptionPredictionJSON.getJSONObject(i)
                     val date = LocalDate.parse(jsonObject.getString("Data"))
                     val consumption = jsonObject.getDouble("Consumo")
-                    consumptionPredictionList.add(ConsumptionPrediction(date,consumption))
-                    for (j in 1..numberOfDeposits){
-                        if(!repository.checkIfConsumptionEntryExists(date.minusDays(1),uag.id,j)) continue
-                        val lastConsumption = repository.getConsumptionByDate(date.minusDays(1),uag.id,j)
+                    consumptionPredictionList.add(ConsumptionPrediction(date, consumption))
+                    for (j in 1..numberOfDeposits) {
+                        if (!repository.checkIfConsumptionEntryExists(date.minusDays(1), uag.id, j)) continue
+                        val lastConsumption = repository.getConsumptionByDate(date.minusDays(1), uag.id, j)
 
                         val newLevel = lastConsumption.gasLevel + consumption
-                        repository.insertLevel(date,11 + i,newLevel,uag.id,j,0,consumption)
+                        repository.insertLevel(date, 11 + i, newLevel, uag.id, j, 0, consumption)
                     }
 
                 }

@@ -63,4 +63,10 @@ class Controller(private val service: Service) {
         return ResponseEntity.status(200).body(res)
     }
 
+    @GetMapping(Uris.PREDICTION)
+    fun getPrediction(@PathVariable id: Int): ResponseEntity<*>{
+        val res = service.getPrediction(id)
+        return ResponseEntity.status(200).body(res)
+    }
+
 }

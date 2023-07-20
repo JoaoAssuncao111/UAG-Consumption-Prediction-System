@@ -8,11 +8,13 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  BarChart,
-  Bar,
+
 } from 'recharts';
  const lineStrokeWidth = 4
 export function TemperatureChart({ data }) {
+
+  
+  
   return (
     <div style={{ width: '100%' }}>
       <ResponsiveContainer width="100%" height={400}>

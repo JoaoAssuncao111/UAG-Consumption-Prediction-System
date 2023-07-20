@@ -53,7 +53,7 @@ export function Uag() {
     return (
         <div>
             <Header></Header>
-            <div className="align-right"><button className="delete-button" onClick={handleDeleteClick}>Apagar UAG</button></div>
+            
 
             <div className="center-items">
                 <div className="location-card">

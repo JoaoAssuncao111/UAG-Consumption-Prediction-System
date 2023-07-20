@@ -90,7 +90,7 @@ export function Prediction() {
             checked={selectedRoute === 'training'}
             onChange={handleRouteChange}
           />
-          Training
+          Treino
         </label>
         <label>
           <input
@@ -99,11 +99,11 @@ export function Prediction() {
             checked={selectedRoute === 'prediction'}
             onChange={handleRouteChange}
           />
-          Prediction
+          Previsão
         </label>
       </div>
       <button onClick={handleButtonClick} disabled={isFetchButtonDisabled}>
-        {selectedRoute === 'training' ? 'Train Uags' : 'Predict Uags'}
+        {selectedRoute === 'training' ? 'Treinar UAGs' : 'Prever Consumos'}
       </button>
       <DatePickerInput
         selectedDate={startDate}

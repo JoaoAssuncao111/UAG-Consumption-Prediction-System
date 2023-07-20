@@ -37,6 +37,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=joaopedro123
-
+    
 volumes:
   pg_data:

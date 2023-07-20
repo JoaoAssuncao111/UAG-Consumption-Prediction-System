@@ -46,4 +46,5 @@ interface Repository {
     fun getConsumptionByDate(dateHour: LocalDate, location: Int,depositNumber: Int): Level
     fun getNumberOfDeposits(location: Int): Int
     fun checkIfConsumptionEntryExists(dateHour: LocalDate, location: Int, depositNumber: Int): Boolean
+    fun getPrediction(id: Int): String?
 }
