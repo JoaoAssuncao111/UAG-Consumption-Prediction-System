@@ -1,4 +1,4 @@
-# UAG Prediction System API Documentation
+# UAG Consumption Prediction System API Documentation
 
 This document provides an overview of the endpoints available in the UAG Prediction System API.
 
