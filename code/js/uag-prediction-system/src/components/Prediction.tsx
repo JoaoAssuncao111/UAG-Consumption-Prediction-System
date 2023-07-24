@@ -7,19 +7,53 @@ import { Link } from "react-router-dom"
 import { Header } from "./Header";
 
 export function Prediction() {
-  const [startDate, setStartDate] = useState(undefined);
-  const [endDate, setEndDate] = useState(undefined);
-  const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(false);
-  const [error, setError] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(true);
+  const [error, setError] = useState("Por favor preencha a Janela Temporal");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState('training'); // Default selected route is 'training'
+  const [timeoutId, setTimeoutId] = useState(undefined)
 
   useEffect(() => {
-    setTimeout(() => {
-      setError("");
-    }, 3000);
+    clearTimeout(timeoutId);
+    if (error) {
+      let newTimeoutId = setTimeout(() => {
+        setError("");
+      }, 3000);
+      setTimeoutId(newTimeoutId)
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [error]);
+
+
+
+  useEffect(() => {
+    const differenceInDays = Math.round(Math.abs((endDate - startDate) / (24 * 60 * 60 * 1000)));
+    if (endDate === null || startDate === null) {
+      setError('Por favor preencha a Janela Temporal');
+      setisFetchButtonDisabled(true);
+    } else if (endDate < startDate) {
+      setError('Janela Temporal Inválida');
+      setisFetchButtonDisabled(true);
+
+    } else if (selectedRoute === 'prediction' && differenceInDays !== 4) {
+
+
+      setError('Previsões são limitadas a 5 dias');
+      setisFetchButtonDisabled(true);
+
+    }
+    else {
+      setError("");
+      setisFetchButtonDisabled(false);
+    }
+    console.log(differenceInDays)
+  }, [startDate, endDate, selectedRoute]);
 
   const handleRouteChange = (event) => {
     setSelectedRoute(event.target.value);
@@ -48,7 +82,7 @@ export function Prediction() {
         const responseData = await resp.json();
         setData(responseData);
       } else {
-        setError('Ocorreu um erro');
+        setError('Valores de consumo inexistentes ou previsão já efetuada');
       }
     } catch (error) {
       setError('Ocorreu um erro');
@@ -57,25 +91,11 @@ export function Prediction() {
     setIsLoading(false);
   };
 
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
-    if (endDate && date > endDate) {
-      setError('Janela de tempo inválida');
-      setisFetchButtonDisabled(true);
+  const handleDateChange = (date, isStartDate) => {
+    if (isStartDate) {
+      setStartDate(date);
     } else {
-      setisFetchButtonDisabled(false);
-      setError('');
-    }
-  };
-
-  const handleEndDateChange = (date) => {
-    setEndDate(date);
-    if (startDate && date < startDate) {
-      setError('Janela de tempo inválida');
-      setisFetchButtonDisabled(true);
-    } else {
-      setisFetchButtonDisabled(false);
-      setError('');
+      setEndDate(date);
     }
   };
 
@@ -107,12 +127,12 @@ export function Prediction() {
       </button>
       <DatePickerInput
         selectedDate={startDate}
-        handleDateChange={handleStartDateChange}
+        handleDateChange={(date) => handleDateChange(date, true)}
         placeholderText={"Data Inicial"}
       />
       <DatePickerInput
         selectedDate={endDate}
-        handleDateChange={handleEndDateChange}
+        handleDateChange={(date) => handleDateChange(date, false)}
         placeholderText={"Data Final"}
       />
       {isLoading ? (

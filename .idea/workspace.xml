@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="52776b7e-b5e2-4c1a-a85f-9315363ec096" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/code/js/uag-prediction-system/src/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/code/js/uag-prediction-system/src/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/js/uag-prediction-system/src/components/Levels.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/js/uag-prediction-system/src/components/Levels.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/jvm/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/.gradle/8.0/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/jvm/.gradle/8.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/.gradle/8.0/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/jvm/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/jvm/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/create-schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/sql/create-schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/delete-schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/sql/delete-schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/drop-tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/sql/drop-tables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/insert-coordinates.sql" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/sql/insert-coordinates.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/insert-dummy-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/sql/insert-dummy-data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/queries-draft.sql" beforeDir="false" afterPath="$PROJECT_DIR$/code/jvm/sql/queries-draft.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2T1aQ2qBnsinGlZe1OJTQhm4eXr" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/ISEL/Projeto/uag-prediction-system/code/jvm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\ISEL\Projeto\uag-prediction-system\code\jvm" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="52776b7e-b5e2-4c1a-a85f-9315363ec096" name="Changes" comment="" />
+      <created>1690213020361</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1690213020361</updated>
+      <workItem from="1690213021367" duration="42000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -86,7 +86,7 @@ export function Levels() {
       </div>
 
       <div>
-        <button onClick={handleSubmit}>Fetch</button>
+        <button disabled={isFetchButtonDisabled} onClick={handleSubmit}>Fetch</button>
         <h1 className='chart-title'>{levelData.length === 0 ? null : 'Gráfico de Níveis e Entregas'}</h1>
         {levelData.length > 0 ? (
           <>
