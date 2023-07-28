@@ -112,7 +112,7 @@ fun extractLevelData(
     locations1: MutableList<String>,
     locationDeposits: MutableList<String>
 ): MutableList<LevelEntry> {
-
+    var count = 0
     val levelData: MutableList<LevelEntry> = mutableListOf()
     var linesIdx = 22 //22
 
@@ -127,12 +127,15 @@ fun extractLevelData(
             if (hasCounter) {
                 if ((currentLine[locationOffset + 1] == "0.00" || currentLine[locationOffset + 1] == "") && i < locations1.size) {
                     locationOffset += 3
+                    count++
                     continue
+
                     //No readings for this location, skip
                 } else {
                     if (currentLine[locationOffset] == "") {
                         locationOffset += 3
                         hasCounter = false;
+                        count++
                         continue
                     }
                     //Location and deposit
@@ -170,6 +173,7 @@ fun extractLevelData(
         }
         linesIdx++
     }
+    println(count)
     return levelData
 }
 

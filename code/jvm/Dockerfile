@@ -14,7 +14,8 @@ FROM python:3.8 AS python
 WORKDIR /app
 
 # Copy the python scripts and requirements.txt
-COPY python_scripts /app/python_scripts
+COPY python_scripts/ModuloTreino.py /app/python_scripts/ModuloTreino.py
+COPY python_scripts/PrevisaoResultados.py /app/python_scripts/PrevisaoResultados.py
 COPY galp_file/galp_data.txt /app/galp_data.txt
 COPY requirements.txt /app/requirements.txt
 
@@ -32,6 +33,9 @@ COPY --from=backend /app/uag-consumption-prediction-system.jar /app/uag-consumpt
 
 # Copy the installed Python dependencies from the second stage
 COPY --from=python /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
+
+# Copy the Python executable from the second stage (Add this line)
+COPY --from=python /usr/local/bin/python /usr/local/bin/python
 
 # Expose the port on which the Spring application runs (replace with your actual port)
 EXPOSE 8080

@@ -51,4 +51,7 @@ SELECT *
                 ORDER BY date_hour, prediction_id;
 
 
-SELECT DISTINCT ON (deposit_number) * from level where location = :location
+SELECT DISTINCT ON (deposit_number) * from level where location = :location;
+
+DELETE FROM temperature where location = 3320 OR location = 3321;
+DELETE FROM humidity where location = 3320 OR location = 3321;

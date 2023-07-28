@@ -61,7 +61,7 @@ export function Humidity() {
                 />
             </div>
             <div>
-                <button onClick={handleSubmit}>Fetch</button>
+                <button disabled={isFetchButtonDisabled} onClick={handleSubmit}>Fetch</button>
                 <h1 className="chart-title">{data.length == 0 ? null : "Gráfico de Humidade"}</h1>
                 {data.length > 0 ? (
                     <HumidityChart data={data} />

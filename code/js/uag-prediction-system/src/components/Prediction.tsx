@@ -3,20 +3,21 @@ import { DatePickerInput } from './DatePicker';
 import { api } from '../api';
 import { format } from 'date-fns';
 import "../styles.css"
-import { Link } from "react-router-dom"
 import { Header } from "./Header";
 
 export function Prediction() {
+  
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(true);
   const [error, setError] = useState("Por favor preencha a Janela Temporal");
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDone,setIsDone] = useState(false)
+  const [isLoading, setIsLoading] = useState(undefined);
   const [selectedRoute, setSelectedRoute] = useState('training'); // Default selected route is 'training'
   const [timeoutId, setTimeoutId] = useState(undefined)
-
+  
   useEffect(() => {
+
     clearTimeout(timeoutId);
     if (error) {
       let newTimeoutId = setTimeout(() => {
@@ -60,6 +61,7 @@ export function Prediction() {
   };
 
   const handleButtonClick = async () => {
+    setIsLoading(true);
     const formattedStartDate = format(startDate, 'yyyy-MM-dd');
     const formattedEndDate = format(endDate, 'yyyy-MM-dd');
     setIsLoading(true);
@@ -80,7 +82,6 @@ export function Prediction() {
 
       if (resp.ok) {
         const responseData = await resp.json();
-        setData(responseData);
       } else {
         setError('Valores de consumo inexistentes ou previsão já efetuada');
       }
@@ -89,6 +90,7 @@ export function Prediction() {
     }
 
     setIsLoading(false);
+    setIsDone(true)
   };
 
   const handleDateChange = (date, isStartDate) => {
@@ -135,11 +137,21 @@ export function Prediction() {
         handleDateChange={(date) => handleDateChange(date, false)}
         placeholderText={"Data Final"}
       />
-      {isLoading ? (
-        <div className="loading-screen">Loading...</div>
+    {isLoading ? (
+        <div className="loading-screen">
+          <div className="loading-spinner">
+            <div className="loading-wheel"></div>
+            <div> {selectedRoute == 'training' ? <p>Algoritmo de Treino em execução</p> : <p>Algoritmo de Previsão em execução</p>}</div>
+          </div>
+        </div>
       ) : (
-        <div className="error-message">{error}</div>
+        
+        <div >
+          {isDone ? <p className="success-message ">Algoritmo Executado com sucesso!</p> : null}
+        </div>
       )}
+
+    <div className="error-message">{error}</div>
     </div>
   );
 }

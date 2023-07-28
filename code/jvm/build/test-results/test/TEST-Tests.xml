@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Tests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-07-20T14:55:46" hostname="DESKTOP-TU12RMC" time="6.19">
+<testsuite name="Tests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-07-24T20:11:05" hostname="DESKTOP-TU12RMC" time="1.015">
   <properties/>
-  <testcase name="invokePredictions()" classname="Tests" time="4.339"/>
-  <testcase name="testHaversineFormula()" classname="Tests" time="0.758"/>
-  <testcase name="invokeTest()" classname="Tests" time="1.093"/>
-  <system-out><![CDATA[[-9.0, -9.0, -9.0, -9.0, -9.0, -9.0, -9.0, -9.0]
-[20.0, 20.0, 20.0, 20.0, 20.0]
-[13.0, 13.0, 13.0, 13.0, 13.0]
-[datetime.datetime(2023, 3, 31, 0, 0), datetime.datetime(2023, 3, 30, 0, 0), datetime.datetime(2023, 3, 29, 0, 0), datetime.datetime(2023, 3, 28, 0, 0), datetime.datetime(2023, 3, 27, 0, 0), datetime.datetime(2023, 3, 26, 0, 0), datetime.datetime(2023, 3, 25, 0, 0), datetime.datetime(2023, 3, 24, 0, 0)]
-[datetime.datetime(2023, 4, 1, 0, 0), datetime.datetime(2023, 4, 2, 0, 0), datetime.datetime(2023, 4, 3, 0, 0), datetime.datetime(2023, 4, 4, 0, 0), datetime.datetime(2023, 4, 5, 0, 0)]
-test
-test
-test
-[{"Data":"2023-04-01","Consumo":-16.270974323},{"Data":"2023-04-02","Consumo":-16.270974323},{"Data":"2023-04-03","Consumo":-16.270974323},{"Data":"2023-04-04","Consumo":-15.7833561393},{"Data":"2023-04-05","Consumo":-15.2957379555}]
-Python script executed successfully.
-[{"Data":"2023-04-01","Consumo":-16.270974323},{"Data":"2023-04-02","Consumo":-16.270974323},{"Data":"2023-04-03","Consumo":-16.270974323},{"Data":"2023-04-04","Consumo":-15.7833561393},{"Data":"2023-04-05","Consumo":-15.2957379555}]
+  <testcase name="invokePredictions()" classname="Tests" time="0.197"/>
+  <testcase name="testHaversineFormula()" classname="Tests" time="0.767"/>
+  <testcase name="invokeTest()" classname="Tests" time="0.049"/>
+  <system-out><![CDATA[python: can't open file 'E:\\app\\python_scripts\\ModuloTreino.py': [Errno 2] No such file or directory
+Python script encountered an error. Exit code: 2
+python: can't open file 'E:\\app\\python_scripts\\ModuloTreino.py': [Errno 2] No such file or directory
 Sines distance: 94.18919700145098
 Horta distance: 1768.6642110778994
 Funchal distance: 913.3898758124705
@@ -50,9 +42,9 @@ Vila do Porto distance: 1472.7775136083046
 Vila Real distance: 466.60759883989317
 Santarém distance: 228.41492194619914
 Coimbra distance: 339.85985821578953
-Python script encountered an error. Exit code: 1
+Python script encountered an error. Exit code: 2
 Result JSON:
-ValueError: Found array with 0 sample(s) (shape=(0, 4)) while a minimum of 1 is required by LinearRegression.
+python: can't open file 'E:\\app\\python_scripts\\ModuloTreino.py': [Errno 2] No such file or directory
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
