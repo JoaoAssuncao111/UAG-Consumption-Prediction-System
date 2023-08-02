@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { api } from "../api";
+import { api } from "../../api";
 
 export function IPMA() {
     

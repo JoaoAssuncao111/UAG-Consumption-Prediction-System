@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ReadingDataInput } from './ReadingDataInput';
-import { api } from '../api';
+import { ReadingDataInput } from '../utils/ReadingDataInput';
+import { api } from "../../api";
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { LevelsChart } from './LevelsChart';
-import { Header } from "./Header";
+import { LevelsChart } from '../utils/LevelsChart';
+import { Header } from "../utils/Header";
 
 export function Levels() {
   const [location, setLocation] = useState(0);

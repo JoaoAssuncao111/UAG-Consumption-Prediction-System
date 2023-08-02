@@ -26,6 +26,7 @@ sealed class UagPostError {
 @Component
 class Service(private val transactionManager: TransactionManager) {
 
+
     fun getUags(): List<Location> {
         return transactionManager.run {
             val repository = it.repository
@@ -265,6 +266,19 @@ class Service(private val transactionManager: TransactionManager) {
             } else {
                 false
             }
+
+        }
+    }
+
+    fun insertOrUpdateLevel(date: String, gasLevel: Double, location: Int,depositNumber: Int, counter: Int, consumption: Double ){
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val newDate = LocalDate.parse(date, formatter)
+
+        return transactionManager.run {
+            val repository = it.repository
+            val level = repository.getLevel(newDate,location,depositNumber)
+            if(level != null) repository.updateLevel(newDate,location,gasLevel,consumption,depositNumber)
+            else repository.insertLevel(newDate,0,gasLevel,location,depositNumber,counter,consumption)
 
         }
     }

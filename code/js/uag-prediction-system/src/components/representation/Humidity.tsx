@@ -1,47 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { ReadingDataInput } from './ReadingDataInput';
-import { api } from '../api';
+import React, { useEffect, useState } from "react";
+import { ReadingDataInput } from '../utils/ReadingDataInput';
+import { api } from '../../api';
 import { format } from 'date-fns';
+import "../../styles.css"
 import { Link } from "react-router-dom"
-import "../styles.css"
-import { TemperatureChart } from './TemperatureChart'
-import { Header } from "./Header";
+import { HumidityChart } from '../utils/HumidityChart';
+import { Header } from "../utils/Header";
 
-export function Temperature() {
+export function Humidity() {
     const [location, setLocation] = useState(0);
     const [startDate, setStartDate] = useState(undefined);
     const [endDate, setEndDate] = useState(undefined);
     const [data, setData] = useState([])
-    const [error, setError] = useState("")
     const [isFetchButtonDisabled, setisFetchButtonDisabled] = useState(false)
+    const [error, setError] = useState("")
 
     useEffect(() => {
         setTimeout(() => {
             setError("")
         }, 3000);
-      }, [error]);
+    }, [error]);
 
-
-   
     const handleSubmit = async () => {
+        console.log(location)
         if (!(startDate && endDate)) {
-            setError('Por favor insira a Janela Temporal');
+            console.log("error")
             return
         }
-
         const formattedStartDate = format(startDate, 'yyyy-MM-dd');
         const formattedEndDate = format(endDate, 'yyyy-MM-dd');
         console.log(formattedEndDate)
         try {
             const resp =
-                await fetch(`${api}/reading/temperature?startDate=${formattedStartDate}&endDate=${formattedEndDate}&location=${location}`)
+                await fetch(`${api}/reading/humidity?startDate=${formattedStartDate}&endDate=${formattedEndDate}&location=${location}`)
 
             const json = await resp.json()
             if (await json) {
                 const sortedArray = json.sort((a, b) => a.dateHour.localeCompare(b.dateHour));
                 setData(sortedArray)
-                console.log(json)
-                if(json.length === 0) setError("Não existem leituras para os dados inseridos")
+                if (json.length === 0) setError("Não existem leituras para os dados inseridos")
             }
         } catch (error) {
             console.log(error)
@@ -50,7 +47,7 @@ export function Temperature() {
     return (
         <div>
             <Header></Header>
-            <div >
+            <div>
                 <ReadingDataInput
                     location={location}
                     setLocation={setLocation}
@@ -60,19 +57,20 @@ export function Temperature() {
                     setEndDate={setEndDate}
                     isFetchButtonDisabled={isFetchButtonDisabled}
                     setIsFetchButtonDisabled={setisFetchButtonDisabled}
+
                 />
             </div>
-
             <div>
-                <button disabled= {isFetchButtonDisabled} onClick={handleSubmit}>Fetch</button>
+                <button disabled={isFetchButtonDisabled} onClick={handleSubmit}>Fetch</button>
+                <h1 className="chart-title">{data.length == 0 ? null : "Gráfico de Humidade"}</h1>
+                {data.length > 0 ? (
+                    <HumidityChart data={data} />
+                ) : (
+                    null
+                )}
             </div>
-            <h1 className="chart-title">{data.length == 0 ? null : "Gráfico de Temperaturas"}</h1>
-            {data.length > 0 ? (
-                <TemperatureChart data={data} />
-            ) : null}
-            <div className='error-message'>{error}</div>
+            <div>{error}</div>
         </div>
     );
-}
-
+};
 

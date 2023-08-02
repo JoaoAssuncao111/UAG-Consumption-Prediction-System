@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { DatePickerInput } from './DatePicker';
-import { api } from '../api';
+import { DatePickerInput } from '../utils/DatePicker';
+import { api } from "../../api";
 import { format } from 'date-fns';
-import "../styles.css"
-import { Header } from "./Header";
+import "../../styles.css"
+import { Header } from "../utils/Header";
 
 export function Prediction() {
   

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ReadingDataInput } from './ReadingDataInput';
-import { api } from '../api';
+import { ReadingDataInput } from '../utils/ReadingDataInput';
+import { api } from '../../api';
 import { format } from 'date-fns';
-import "../styles.css"
+import "../../styles.css"
 import { Link, useParams, useHistory } from "react-router-dom"
-import { HumidityChart } from './HumidityChart';
-import { Header } from "./Header";
+import { HumidityChart } from '../utils/HumidityChart';
+import { Header } from "../utils/Header";
 
 
 export function Uag() {

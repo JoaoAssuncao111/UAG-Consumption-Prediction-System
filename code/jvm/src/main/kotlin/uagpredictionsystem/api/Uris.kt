@@ -11,5 +11,6 @@ object Uris {
     const val PREDICT = "/predict"
     const val PREDICTION = "/prediction/{id}"
     const val IPMA = "/ipma"
+    const val UPDATE_LEVEL = "/levels"
 
 }

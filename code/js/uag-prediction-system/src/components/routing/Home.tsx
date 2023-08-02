@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { api } from "../api";
-import { Header } from "./Header";
+import { api } from "../../api";
+import { Header } from "../utils/Header";
 
 export function Home() {
   return (

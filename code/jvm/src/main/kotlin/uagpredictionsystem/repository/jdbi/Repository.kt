@@ -2,6 +2,7 @@ package uagpredictionsystem.repository.jdbi
 
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.kotlin.mapTo
+import org.jdbi.v3.core.statement.Update
 import uagpredictionsystem.models.*
 import uagpredictionsystem.repository.Repository
 import java.time.LocalDate
@@ -223,5 +224,31 @@ class Repository(
         return list.size
     }
 
+    override fun updateLevel(date: LocalDate, id: Int, level: Double, consumption: Double, depositNumber: Int): Int {
+        return handle.createUpdate("UPDATE level " +
+                "set " +
+                "gas_level = :level," +
+                "consumption = :consumption " +
+                "where date_hour = :date and deposit_number = :depositNumber")
+            .bind("date", date)
+            .bind("level",level)
+            .bind("id", id)
+            .bind("depositNumber", depositNumber)
+            .bind("consumption",consumption)
+            .execute()
+
+    }
+
+    override fun getLevel(dateHour: LocalDate, location: Int, depositNumber: Int): Level? {
+        return handle.createQuery("select * from level " +
+                "where date_hour = :dateHour " +
+                "and location = :location " +
+                "and deposit_number = :depositNumber")
+            .bind("dateHour", dateHour)
+            .bind("location", location)
+            .bind("depositNumber", depositNumber)
+            .mapTo<Level>()
+            .singleOrNull()
+    }
 
 }
