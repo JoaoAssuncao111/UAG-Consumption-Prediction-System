@@ -1,6 +1,6 @@
-ipython: can't open file 'E:\\app\\python_scripts\\ModuloTreino.py': [Errno 2] No such file or directory
+opython: can't open file 'E:\\app\\python_scripts\\PrevisaoResultados.py': [Errno 2] No such file or directory
 2Python script encountered an error. Exit code: 2
-ipython: can't open file 'E:\\app\\python_scripts\\ModuloTreino.py': [Errno 2] No such file or directory
+opython: can't open file 'E:\\app\\python_scripts\\PrevisaoResultados.py': [Errno 2] No such file or directory
 #Sines distance: 94.18919700145098
 $Horta distance: 1768.6642110778994
 %Funchal distance: 913.3898758124705

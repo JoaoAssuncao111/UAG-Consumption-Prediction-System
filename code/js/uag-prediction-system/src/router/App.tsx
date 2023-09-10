@@ -11,6 +11,7 @@ import { InsertUag } from '../components/manipulation/InsertUag';
 import { Uag } from '../components/representation/Uag';
 import { Prediction } from '../components/manipulation/Prediction';
 import { IPMA } from '../components/representation/Ipma';
+import { PythonTest } from '../components/representation/PythonTest';
 import { InsertOrUpdateLevel } from '../components/manipulation/InsertOrUpdateLevel';
 
 
@@ -20,6 +21,7 @@ const App = () => {
         <Router>
             <Switch>
                 <Route path="/humidity" component={Humidity}></Route>
+                <Route path="/pythontest" component={PythonTest}></Route>
                 <Route path="/readings" component={ReadingChoice}></Route>
                 <Route path="/insertions"component={UpdateChoice}></Route>
                 <Route path="/levels" component={Levels}></Route>

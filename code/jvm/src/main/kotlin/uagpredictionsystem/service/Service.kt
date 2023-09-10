@@ -8,6 +8,7 @@ import org.json.JSONObject
 import org.springframework.stereotype.Component
 import uagpredictionsystem.functions.*
 import uagpredictionsystem.invokePredictionAlgorithm
+import uagpredictionsystem.invokePythonTest
 import uagpredictionsystem.invokeTrainingAlgorithm
 import uagpredictionsystem.models.*
 import uagpredictionsystem.repository.TransactionManager
@@ -269,7 +270,9 @@ class Service(private val transactionManager: TransactionManager) {
 
         }
     }
-
+    fun getPythonTest(): String {
+        return invokePythonTest()
+    }
     fun insertOrUpdateLevel(date: String, gasLevel: Double, location: Int,depositNumber: Int, counter: Int, consumption: Double ){
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val newDate = LocalDate.parse(date, formatter)

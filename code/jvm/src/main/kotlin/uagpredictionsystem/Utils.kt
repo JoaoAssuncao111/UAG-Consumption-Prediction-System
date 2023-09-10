@@ -7,12 +7,6 @@ import java.sql.Connection
 import java.text.Normalizer
 import kotlin.math.*
 
-
-sealed class Either<out L, out R> {
-    data class Left<out L>(val value: L) : Either<L, Nothing>()
-    data class Right<out R>(val value: R) : Either<Nothing, R>()
-}
-
 fun replaceAccentedCharacters(text: String): String {
     val normalizedText = Normalizer.normalize(text, Normalizer.Form.NFD)
     val withoutAccents = normalizedText
@@ -54,8 +48,8 @@ fun getAllLocationsFromDb(connection: Connection): HashMap<String, Location> {
 }
 
 fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String {
-    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\ModuloTreino.py"
-
+   //val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\ModuloTreino.py"
+    val pythonScript = "/app/python_scripts/ModuloTreino.py"
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
     val escapedConsumptions = consumptions.replace("\"", "\\\"")
 
@@ -87,8 +81,8 @@ fun invokePredictionAlgorithm(
     coefs: List<Double>,
     intercept: Double
 ): String {
-    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\PrevisaoResultados.py"
-
+    //val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\PrevisaoResultados.py"
+    val pythonScript = "/app/python_scripts/PrevisaoResultados.py"
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
     val escapedConsumptions = consumptions.replace("\"", "\\\"")
 
@@ -100,6 +94,35 @@ fun invokePredictionAlgorithm(
         escapedConsumptions,
         coefs.toString(),
         intercept.toString()
+    )
+
+    processBuilder.redirectErrorStream(true)
+    val process = processBuilder.start()
+
+    val reader = BufferedReader(InputStreamReader(process.inputStream))
+    var line: String?
+    var lastLine: String? = null
+    while (reader.readLine().also { line = it } != null) {
+        println(line)
+        lastLine = line
+    }
+
+    val exitCode = process.waitFor()
+    if (exitCode == 0) {
+        println("Python script executed successfully.")
+    } else {
+        println("Python script encountered an error. Exit code: $exitCode")
+    }
+
+    return lastLine ?: "{}"
+}
+
+fun invokePythonTest(): String{
+    //val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\PythonTest.py"
+    val pythonScript = "/app/python_scripts/PythonTest.py"
+    val processBuilder = ProcessBuilder(
+        "python",
+        pythonScript
     )
 
     processBuilder.redirectErrorStream(true)

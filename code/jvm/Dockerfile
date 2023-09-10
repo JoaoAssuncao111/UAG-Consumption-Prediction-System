@@ -5,37 +5,36 @@ FROM openjdk:17.0.2 AS backend
 WORKDIR /app
 
 # Copy the build output (JAR file) from the Gradle build
-COPY ./build/libs/uag-consumption-prediction-system.jar /app/uag-consumption-prediction-system.jar
+COPY ./build/libs/uag-consumption-prediction-system.jar uag-consumption-prediction-system.jar
 
-# Stage 2: Install Python and its dependencies
-FROM python:3.8 AS python
+# Stage 2: Use a Python-compatible image
+FROM python:3.8-slim-buster AS python
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the python scripts and requirements.txt
-COPY python_scripts/ModuloTreino.py /app/python_scripts/ModuloTreino.py
-COPY python_scripts/PrevisaoResultados.py /app/python_scripts/PrevisaoResultados.py
+COPY python_scripts/ /app/python_scripts/
 COPY galp_file/galp_data.txt /app/galp_data.txt
 COPY requirements.txt /app/requirements.txt
 
 # Install Python dependencies
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
 # Stage 3: Final image for running the backend
-FROM openjdk:17
+FROM openjdk:17.0.2
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the built JAR file from the first stage
-COPY --from=backend /app/uag-consumption-prediction-system.jar /app/uag-consumption-prediction-system.jar
+COPY --from=backend /app/uag-consumption-prediction-system.jar uag-consumption-prediction-system.jar
 
 # Copy the installed Python dependencies from the second stage
-COPY --from=python /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
+COPY --from=python /usr/local /usr/local
 
-# Copy the Python executable from the second stage (Add this line)
-COPY --from=python /usr/local/bin/python /usr/local/bin/python
+# Copy the Python scripts from the second stage
+COPY --from=python /app/python_scripts /app/python_scripts
 
 # Expose the port on which the Spring application runs (replace with your actual port)
 EXPOSE 8080

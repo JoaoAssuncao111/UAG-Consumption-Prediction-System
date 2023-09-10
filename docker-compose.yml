@@ -16,11 +16,12 @@ services:
       - DB_NAME=postgres
       - DB_USER=postgres
       - DB_PASSWORD=joaopedro123
-
+      - Path=C:/Users/joaop/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0/LocalCache/local-packages/Python311/Scripts
+      
   frontend:
     build:
-      context: ./code/js/uag-prediction-system
       dockerfile: Dockerfile
+      context: ./code/js/uag-prediction-system
     image: frontend-image
     ports:
       - "8081:8081"
@@ -28,6 +29,7 @@ services:
       - backend
 
   database:
+  
     image: postgres:latest
     container_name: uag-prediction-system-database-1
     ports:
@@ -37,6 +39,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=joaopedro123
-    
+
 volumes:
   pg_data:
