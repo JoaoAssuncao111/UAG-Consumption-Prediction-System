@@ -7,8 +7,11 @@ WORKDIR /app
 # Copy the build output (JAR file) from the Gradle build
 COPY ./build/libs/uag-consumption-prediction-system.jar uag-consumption-prediction-system.jar
 
-# Stage 2: Use a Python-compatible image
-FROM python:3.8-slim-buster AS python
+# Stage 2: Install Python dependencies and set up the Python environment
+FROM python:3.11.4-slim-buster AS python
+
+# Install the required system packages, including the missing libbz2 library
+RUN apt-get update && apt-get install -y libbz2-dev
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -30,7 +33,7 @@ WORKDIR /app
 # Copy the built JAR file from the first stage
 COPY --from=backend /app/uag-consumption-prediction-system.jar uag-consumption-prediction-system.jar
 
-# Copy the installed Python dependencies from the second stage
+# Copy the installed Python dependencies and libraries from the second stage
 COPY --from=python /usr/local /usr/local
 
 # Copy the Python scripts from the second stage

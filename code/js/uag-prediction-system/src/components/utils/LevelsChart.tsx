@@ -78,7 +78,7 @@ export function LevelsChart({ levels, deliveries }) {
   return (
     <div style={{ width: '90%' }}>
       <ResponsiveContainer width="100%" height={720}>
-        <BarChart data={[...realData, ...predictionData]}>
+        <BarChart data={mergedData}>
           <XAxis dataKey="date" tickLine={null} />
           <YAxis domain={[0, 100]} />
           <CartesianGrid opacity={0.1} vertical={false} />

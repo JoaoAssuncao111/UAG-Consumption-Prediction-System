@@ -37,7 +37,7 @@ class Service(private val transactionManager: TransactionManager) {
     }
 
     fun getReading(startDate: String, endDate: String, id: Int, readingType: String): List<Any> {
-        return transactionManager.run {
+        return transactionManager.run { it ->
             val repository = it.repository
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val newStartDate = LocalDate.parse(startDate, formatter)
@@ -81,7 +81,8 @@ class Service(private val transactionManager: TransactionManager) {
                             )
                         )
                     }
-                    result
+                    result.sortedBy { it.date }
+
                 }
 
                 else ->
@@ -160,8 +161,9 @@ class Service(private val transactionManager: TransactionManager) {
             val consumptionPredictionList = mutableListOf<ConsumptionPrediction>()
             for (uag in uags) {
                 println(uag.id)
-                val numberOfDeposits = repository.getNumberOfDeposits(uag.id)
                 val training = repository.getTraining(uag.id) ?: continue
+                val numberOfDeposits = repository.getNumberOfDeposits(uag.id)
+
                 val trainingJsonObject = JSONObject(training)
                 val coefficientsJSONArray = trainingJsonObject.getJSONArray("Coefficients")
 
@@ -176,7 +178,7 @@ class Service(private val transactionManager: TransactionManager) {
 
                 val temperaturesJson = objectMapper.writeValueAsString(temperatureAndConsumptions.temperatures)
                 val consumptionsJson = objectMapper.writeValueAsString(temperatureAndConsumptions.consumptions)
-
+                if (consumptionsJson == "[]") continue
                 val consumptionPredictionsString =
                     invokePredictionAlgorithm(temperaturesJson, consumptionsJson, coefficients, intercept)
                 val consumptionPredictionJSON = JSONArray(consumptionPredictionsString)
@@ -228,7 +230,7 @@ class Service(private val transactionManager: TransactionManager) {
                 val consumptionsJson = objectMapper.writeValueAsString(consumptions)
 
                 val trainingOutputJson = invokeTrainingAlgorithm(temperaturesJson, consumptionsJson)
-
+                println(trainingOutputJson)
                 if (trainingOutputJson != "") repository.updateTraining(uag.id, trainingOutputJson)
 
             }

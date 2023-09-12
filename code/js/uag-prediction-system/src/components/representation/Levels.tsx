@@ -30,7 +30,7 @@ export function Levels() {
     }
     const formattedStartDate = format(startDate, 'yyyy-MM-dd');
     const formattedEndDate = format(endDate, 'yyyy-MM-dd');
-    console.log(formattedEndDate);
+  
     try {
       const resp = await fetch(
         `${api}/reading/levels?startDate=${formattedStartDate}&endDate=${formattedEndDate}&location=${location}`
@@ -39,6 +39,7 @@ export function Levels() {
       const json = await resp.json();
       if (json) {
         setLevelData(json);
+
         if (json.length === 0) setError("Não existem leituras para os dados inseridos")
       }
     } catch (error) {
@@ -51,9 +52,9 @@ export function Levels() {
       );
 
       const json = await resp.json();
-      if (json) {
+      if (json) {      
         setDeliveryData(json);
-        console.log(json)
+      
       }
     } catch (error) {
       console.log(error)
@@ -65,8 +66,11 @@ export function Levels() {
       return levelData;
     } else {
       const depositNumber = parseInt(selectedDeposit); // Convert selectedDeposit to integer
+      console.log(levelData.filter((item) => item.depositNumber === depositNumber))
       return levelData.filter((item) => item.depositNumber === depositNumber);
     }
+
+    
   };
 
   return (

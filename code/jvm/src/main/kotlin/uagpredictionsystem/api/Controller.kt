@@ -51,12 +51,6 @@ class Controller(private val service: Service) {
         return ResponseEntity.status(200).body(res)
     }
 
-    @GetMapping(Uris.PYTHON_TEST)
-    fun getDeliveries(): ResponseEntity<*> {
-        val res = service.getPythonTest()
-        return ResponseEntity.status(200).body(res)
-    }
-
     @PostMapping(Uris.PREDICT)
     fun predictConsumptions(@ModelAttribute input: TrainingInputModel): ResponseEntity<*> {
         val res = service.getConsumptionPrediction(input.startDate, input.endDate)

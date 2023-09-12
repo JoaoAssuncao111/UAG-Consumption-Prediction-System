@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Tests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-09-10T20:43:04" hostname="DESKTOP-TU12RMC" time="0.984">
+<testsuite name="Tests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-09-12T13:41:21" hostname="DESKTOP-TU12RMC" time="0.997">
   <properties/>
-  <testcase name="invokePredictions()" classname="Tests" time="0.193"/>
-  <testcase name="testHaversineFormula()" classname="Tests" time="0.751"/>
+  <testcase name="invokePredictions()" classname="Tests" time="0.207"/>
+  <testcase name="testHaversineFormula()" classname="Tests" time="0.75"/>
   <testcase name="invokeTest()" classname="Tests" time="0.038"/>
   <system-out><![CDATA[python: can't open file 'E:\\app\\python_scripts\\PrevisaoResultados.py': [Errno 2] No such file or directory
 Python script encountered an error. Exit code: 2
