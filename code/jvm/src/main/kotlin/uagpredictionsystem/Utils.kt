@@ -48,12 +48,12 @@ fun getAllLocationsFromDb(connection: Connection): HashMap<String, Location> {
 }
 
 fun invokeTrainingAlgorithm(temperatures: String, consumptions: String): String {
-    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\ModuloTreino.py"
-    //val pythonScript = "/app/python_scripts/ModuloTreino.py"
-    val escapedTemperatures = temperatures.replace("\"", "\\\"")
-    val escapedConsumptions = consumptions.replace("\"", "\\\"")
+    //val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\ModuloTreino.py"
+    val pythonScript = "/app/python_scripts/ModuloTreino.py"
+    //val escapedTemperatures = temperatures.replace("\"", "\\\"")
+    //val escapedConsumptions = consumptions.replace("\"", "\\\"")
 
-    val processBuilder = ProcessBuilder("python", pythonScript, escapedTemperatures, escapedConsumptions)
+    val processBuilder = ProcessBuilder("python", pythonScript, temperatures, consumptions)
 
     processBuilder.redirectErrorStream(true)
     val process = processBuilder.start()
@@ -81,8 +81,8 @@ fun invokePredictionAlgorithm(
     coefs: List<Double>,
     intercept: Double
 ): String {
-    val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\PrevisaoResultados.py"
-    //val pythonScript = "/app/python_scripts/PrevisaoResultados.py"
+    //val pythonScript = "E:\\ISEL\\Projeto\\uag-prediction-system\\code\\jvm\\python_scripts\\PrevisaoResultados.py"
+    val pythonScript = "/app/python_scripts/PrevisaoResultados.py"
     val escapedTemperatures = temperatures.replace("\"", "\\\"")
     val escapedConsumptions = consumptions.replace("\"", "\\\"")
 
@@ -90,8 +90,8 @@ fun invokePredictionAlgorithm(
     val processBuilder = ProcessBuilder(
         "python",
         pythonScript,
-        escapedTemperatures,
-        escapedConsumptions,
+        temperatures,
+        consumptions,
         coefs.toString(),
         intercept.toString()
     )

@@ -142,7 +142,7 @@ export function Levels() {
           </>
         ) : null}
       </div>
-      <div>{error}</div>
+      <div className="error-message">{error}</div>
     </div>
   );
 }

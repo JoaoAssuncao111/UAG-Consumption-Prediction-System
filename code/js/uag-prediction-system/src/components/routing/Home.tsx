@@ -11,7 +11,6 @@ export function Home() {
       <div className="center-items">
         <Link className="link" to="/readings">Leituras de dados</Link>
         <Link className="link" to= "/insertions">Manipulação de dados</Link>
-        <Link className="link" to= "/pythontest">Python Test</Link>
       </div>
     </div>
   );

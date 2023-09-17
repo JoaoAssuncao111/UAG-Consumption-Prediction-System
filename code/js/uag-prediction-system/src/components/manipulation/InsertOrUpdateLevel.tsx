@@ -8,27 +8,57 @@ import { format } from 'date-fns';
 
 export function InsertOrUpdateLevel() {
     const [formInputData, setFormInputData] = useState({
-        level: 0.0,
-        location: 0,
-        depositNumber: 0.0,
-        counter: 0,
-        consumption: 0.0
+        level: undefined,
+        location: undefined,
+        depositNumber: undefined,
+        counter: undefined,
+        consumption: undefined
     })
 
     const [locations, setLocations] = useState([])
-    const [isFetchButtonDisabled, setIsFetchButtonDisabled] = useState()
+    const [isFetchButtonDisabled, setIsFetchButtonDisabled] = useState(false)
     const [selectedOption, setSelectedOption] = useState(null);
     const [rawDate, setDate] = useState(new Date())
+    const [error,setError] = useState("")
+    const [timeoutId, setTimeoutId] = useState(undefined)
     const options = locations.map((location) => ({
         value: location.id,
         label: location.name,
     }));
 
+
     useEffect(() => {
         fetchLocations()
     }, [])
 
+    useEffect(() => {
 
+        clearTimeout(timeoutId);
+        if (error) {
+          let newTimeoutId = setTimeout(() => {
+            setError("");
+          }, 3000);
+          setTimeoutId(newTimeoutId)
+        }
+    
+        return () => {
+          clearTimeout(timeoutId);
+        };
+      }, [error]);
+
+    useEffect(() => {
+        if(isNaN(formInputData.location) || (isNaN(formInputData.level) && formInputData.level < 0) || (isNaN(formInputData.depositNumber) && formInputData.depositNumber < 0)
+         || isNaN(formInputData.counter) || isNaN(formInputData.consumption)){
+            setError("Insira os dados em falta")
+            setIsFetchButtonDisabled(true)
+        }
+        else{
+            setError("")
+            setIsFetchButtonDisabled(false)
+        }
+
+        console.log(formInputData.level)
+    },[formInputData])
    
 
     const handleChange = (event) => {
@@ -55,6 +85,7 @@ export function InsertOrUpdateLevel() {
     }
 
     const handleSubmit = async (event) => {
+         
         const date = format(rawDate, 'yyyy-MM-dd');
         console.log(JSON.stringify({date,...formInputData}))
         event.preventDefault();
@@ -106,6 +137,7 @@ export function InsertOrUpdateLevel() {
                 <button type='submit' disabled={isFetchButtonDisabled} onClick={handleSubmit}>Inserir</button>
 
             </form>
+            <div className="error-message">{error}</div>
 
         </div>);
 }

@@ -21,14 +21,12 @@ const App = () => {
         <Router>
             <Switch>
                 <Route path="/humidity" component={Humidity}></Route>
-                <Route path="/pythontest" component={PythonTest}></Route>
                 <Route path="/readings" component={ReadingChoice}></Route>
                 <Route path="/insertions"component={UpdateChoice}></Route>
                 <Route path="/levels" component={Levels}></Route>
                 <Route path="/temperature" component={Temperature} />
                 <Route path="/predict" component={Prediction} />
                 <Route path="/insertuag" component={InsertUag} />
-                <Route path="/uags" component={Uags} />
                 <Route path="/ipma" component={IPMA}></Route>
                 <Route path="/uag/:name" component={Uag}></Route>
                 <Route path="/update" component={InsertOrUpdateLevel} />
